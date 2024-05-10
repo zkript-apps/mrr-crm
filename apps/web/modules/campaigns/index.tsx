@@ -1,15 +1,14 @@
 import React from 'react'
 import { Separator } from "@/components/ui/separator"
 import CampaignCard from '@/components/campaign-card'
-import EditCampaignSheet from './edit-campaign-sheet'
 
-const AdminCampaigns = () => {
+const Campaigns = () => {
   return (
     <div className="space-y-6 p-10 pb-16">
       <div className="space-y-0.5">
         <h2 className="text-2xl font-bold tracking-tight">Campaigns</h2>
         <p className="text-muted-foreground">
-          You can manage your campaign in this information here.
+          Select your current campaign to retrieve the right data.
         </p>
       </div>
       <Separator className="my-6" />
@@ -27,4 +26,4 @@ const AdminCampaigns = () => {
   )
 }
 
-export default AdminCampaigns
+export default Campaigns
