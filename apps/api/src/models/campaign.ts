@@ -11,13 +11,21 @@ const Patterns = new Schema({
   }
 })
 
+const Remarks = new Schema({
+  comment:String,
+  date:Date
+})
+
 const Leads = new Schema({
   values:{
     type:Object,
     required:true
   },
   paymentRecord: Array,
-  remarks:[String]
+  remarks:{
+    type:[Remarks],
+    required:false
+  }
 })
 
 const campaign  = new Schema({
