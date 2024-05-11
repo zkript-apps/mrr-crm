@@ -37,6 +37,7 @@ const campaign  = new Schema({
     type: String,
     required: true
   },
+  leadUniqueKey:String,
   patterns:[Patterns],
   leads:[Leads],
   createdAt: {
