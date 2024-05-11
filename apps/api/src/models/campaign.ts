@@ -16,12 +16,20 @@ const Remarks = new Schema({
   date:Date
 })
 
+const Payments = new Schema({
+  method:String,
+  date:Date,
+  receiptAmount:Number,
+  repayAmount:Number,
+  fileName:String,
+  remarks:String
+})
 const Leads = new Schema({
   values:{
     type:Object,
     required:true
   },
-  paymentRecord: Array,
+  payments: [Payments],
   remarks:{
     type:[Remarks],
     required:false
