@@ -3,26 +3,29 @@ import React from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import BasicInformation from './components/basic-information'
 import PaymentMethods from './components/payment-methods'
-
-
-const agency = {
-  firstName: "John",
-  lastName: "Madrigal",
-  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-}
+import useGetCampaignTitleAndDescription from './components/basic-information/hooks/useGetCampaignTitleAndDescription'
+import { Skeleton } from '@/components/skeleton'
 
 const Lead = () => {
+  const { data: titleAndDescription, isLoading: isTitleAndDescriptionLoading } = useGetCampaignTitleAndDescription("663ee9c094a8bb883db97936")
   return (
     <div className='flex flex-col gap-8 p-12'>
       <div className='flex flex-col gap-12'>
-        <div>
-          <div className='text-xl font-semibold'>
-            {agency.firstName} {agency.lastName}
+        {
+          !isTitleAndDescriptionLoading ? 
+          <div>
+            <div className='text-xl font-semibold'>
+              {titleAndDescription?.item.title ? titleAndDescription?.item.title : "No title"}
+            </div>
+            <div className='text-gray-500'>
+              {titleAndDescription?.item.description ? titleAndDescription?.item.description : "No description"}
+            </div>
+          </div> : 
+          <div className='flex flex-col gap-2'>
+            <Skeleton className="h-6 w-44" />
+            <Skeleton className="h-4 w-64" />
           </div>
-          <div className='text-gray-500'>
-            {agency.description}
-          </div>
-        </div>
+        }
       </div>
       <div>
         {/* <Tabs tabs={tabs} /> */}
