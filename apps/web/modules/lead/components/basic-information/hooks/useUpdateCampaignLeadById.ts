@@ -2,7 +2,7 @@ import { ApiService } from "@/lib/api";
 import { API_CAMPAIGNS } from "@/lib/api-routes";
 import { useMutation } from "@tanstack/react-query"
 
-interface Payment {
+export interface T_Payment {
   method: string;
   date: string;
   receiptAmount: number;
@@ -20,7 +20,7 @@ interface Remark {
 
 export interface T_Campaign_Lead {
   values: Record<string, string>;
-  payments: Payment[];
+  payments: T_Payment[];
   remarks: Remark[];
 }
 

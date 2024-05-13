@@ -5,6 +5,7 @@ import BasicInformation from './components/basic-information'
 import PaymentMethods from './components/payment-methods'
 import useGetCampaignTitleAndDescription from './components/basic-information/hooks/useGetCampaignTitleAndDescription'
 import { Skeleton } from '@/components/skeleton'
+import PaymentHistory from './components/payment-history'
 
 const Lead = () => {
   const { data: titleAndDescription, isLoading: isTitleAndDescriptionLoading } = useGetCampaignTitleAndDescription("663ee9c094a8bb883db97936")
@@ -48,7 +49,7 @@ const Lead = () => {
             <BasicInformation />
           </TabsContent>
           <TabsContent className='mt-8' value="paymentHistory">
-            Payment History
+            <PaymentHistory />
           </TabsContent>
           <TabsContent className='mt-8' value="paymentMethods">
             <PaymentMethods />
