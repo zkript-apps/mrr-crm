@@ -29,7 +29,7 @@ export async function updateCampaignLeadById(campaignId: string, uniqueId: strin
   return await apiService.patch(`${API_CAMPAIGNS}/${campaignId}/lead/${uniqueId}`, data)
 }
 
-function useUpdateProject(campaignId: string, uniqueId: string) {
+function useUpdateCampaignLeadById(campaignId: string, uniqueId: string) {
   const mutate = useMutation({
     mutationFn: (data: T_Campaign_Lead) => 
       updateCampaignLeadById(campaignId, uniqueId, data)
@@ -37,4 +37,4 @@ function useUpdateProject(campaignId: string, uniqueId: string) {
   return mutate
 }
 
-export default useUpdateProject
+export default useUpdateCampaignLeadById

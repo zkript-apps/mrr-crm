@@ -12,6 +12,7 @@ const Lead = () => {
     <div className='flex flex-col gap-8 p-12'>
       <div className='flex flex-col gap-12'>
         {
+          titleAndDescription?.item ?           
           !isTitleAndDescriptionLoading ? 
           <div>
             <div className='text-xl font-semibold'>
@@ -24,6 +25,14 @@ const Lead = () => {
           <div className='flex flex-col gap-2'>
             <Skeleton className="h-6 w-44" />
             <Skeleton className="h-4 w-64" />
+          </div> :
+          <div>
+            <div className='text-xl font-semibold'>
+              No title
+            </div>
+            <div className='text-gray-500'>
+              No description
+            </div>
           </div>
         }
       </div>

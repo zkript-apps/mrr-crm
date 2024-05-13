@@ -11,10 +11,16 @@ function BasicInformation() {
   return (
     <div className='flex gap-44'>
       <div className='w-1/2'>
-        <BasicInformationFields fields={campaignLead?.item.values} isLoading={isCampaignLeadLoading} />
+        {
+          campaignLead?.item ? 
+            <BasicInformationFields fields={campaignLead.item.values} isLoading={isCampaignLeadLoading} /> :
+            <div className='text-gray-500'>
+              There are no leads for this Campaign
+            </div>
+        }
       </div>
       <div className='w-1/2'>
-        <Remarks campaignLead={campaignLead?.item} isLoading={isCampaignLeadLoading} />
+        <Remarks campaignLead={campaignLead?.item} isLoading={isCampaignLeadLoading} leadId={leadId} />
       </div>
     </div>
   )

@@ -5,30 +5,42 @@ import { Textarea } from '@/components/ui/textarea'
 import React from 'react'
 import { format } from 'date-fns';
 import { useForm } from 'react-hook-form'
-import { T_Campaign_Lead } from './hooks/useUpdateCampaignLeadById'
-
-interface Remarks {
-  comment: string,
-  date: string,
-  _id: string
-}
+import useUpdateCampaignLeadById, { T_Campaign_Lead } from './hooks/useUpdateCampaignLeadById'
+import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner"
 
 interface T_Remark {
-  remark: string
+  comment: string
 }
 
-function Remarks({ campaignLead, isLoading }: { campaignLead: T_Campaign_Lead, isLoading: boolean }) {
-  
-  const { register, handleSubmit } = useForm<T_Remark>()
-
+function Remarks({ campaignLead, isLoading, leadId }: { campaignLead: T_Campaign_Lead, isLoading: boolean, leadId: string }) {
+  const queryClient = useQueryClient();
+  const { register, handleSubmit, reset } = useForm<T_Remark>()
+  const { mutate, isPending: isUpdateCampaignLeadLoading } = useUpdateCampaignLeadById("663ee9c094a8bb883db97936", leadId)
   const onSubmit = (data: any) => {
     const formattedData ={
       ...campaignLead,
       remarks: [
-        ...campaignLead.remarks
+        ...campaignLead.remarks,
+        {
+          ...data,
+          date: new Date().toISOString()
+        }
       ]
     }
-    console.log(campaignLead)
+    mutate(formattedData, {
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ['campaign', 'title-description'],
+          refetchType: 'active',
+        });
+        reset()
+        toast.success("Remarks saved")
+      },
+      onError() {
+        console.log("error")
+      }
+    })
   }
 
   return (
@@ -38,9 +50,9 @@ function Remarks({ campaignLead, isLoading }: { campaignLead: T_Campaign_Lead, i
           <label className='text-sm'>
             Remarks
           </label>
-          <Textarea {...register("remark", { required: true })}  placeholder='Enter your remarks here' className='h-32' />
+          <Textarea {...register("comment", { required: true })} disabled={isUpdateCampaignLeadLoading} placeholder='Enter your remarks here' className='h-32' />
           <div className='flex justify-end'>
-            <Button className='w-1/6'>Add</Button>
+            <Button disabled={isUpdateCampaignLeadLoading} className='w-1/6'>Add</Button>
           </div>
         </div>
       </form>
@@ -70,20 +82,29 @@ function Remarks({ campaignLead, isLoading }: { campaignLead: T_Campaign_Lead, i
         </div>
         : 
         <>
-          {campaignLead.remarks.map((remark, index) => (
-            <div key={index}>
-              <div className='p-4'>
-                <div className='text-xs text-gray-500'>
-                  {format(new Date(remark.date), "MMMM d, yyyy h:mm a")}
+          {campaignLead ? 
+            campaignLead.remarks.sort((a, b) => {
+              const dateA = new Date(a.date).getTime();
+              const dateB = new Date(b.date).getTime();
+              return dateB - dateA;
+            }).map((remark, index) => (
+              <div key={index}>
+                <div className='p-4'>
+                  <div className='text-xs text-gray-500'>
+                    {format(new Date(remark.date), "MMMM d, yyyy h:mm a")}
+                  </div>
+                  <div>
+                    {remark.comment}
+                  </div>
                 </div>
-                <div>
-                  {remark.comment}
-                </div>
+                {/* Render Separator only if it's not the last item */}
+                {index !== campaignLead.remarks.length - 1 && <Separator className='h-0.5' />}
               </div>
-              {/* Render Separator only if it's not the last item */}
-              {index !== campaignLead.remarks.length - 1 && <Separator className='h-0.5' />}
+            )) : 
+            <div className='text-gray-500'>
+              No remarks yet, add one using the form above.
             </div>
-          ))}
+          }
         </>
         }
       </div>

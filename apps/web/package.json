@@ -25,10 +25,12 @@
     "js-cookie": "^3.0.5",
     "lucide-react": "^0.378.0",
     "next": "14.2.3",
+    "next-themes": "^0.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.51.4",
     "shadcn-ui": "^0.8.0",
+    "sonner": "^1.4.41",
     "tabs": "^0.2.0",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7"
