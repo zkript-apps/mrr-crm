@@ -77,20 +77,18 @@ export const updatePaymentMethodByCampaign = async (
   res: Response
 ) => {
   const paymentMethodId = req.params.paymentMethodId
-  const campaignId = req.params.campaignId
   const {steps}:T_Update_PaymentMethod = req.body
   const isValidInput = Z_Update_PaymentMethod.safeParse(req.body)
   if(isValidInput.success){
     try {
-      const getCampaign = await campaign.findOne({_id:campaignId, deletedAt:null})
-      if(!getCampaign){
-        return res.json(response.error({message:"Campaign not found"}))
+      const getPaymentMethod = await paymentMethods.findOne({_id:paymentMethodId, deletedAt:null})
+      if(!getPaymentMethod){
+        return res.json(response.error({message:"Payment method not found"}))
       }
       const editPaymentMethod = await paymentMethods.findByIdAndUpdate(
        paymentMethodId,
         {
           $set:{
-            campaign:campaignId,
             steps:steps,
             updatedAt: Date.now()
           }
@@ -118,10 +116,6 @@ export const deletePaymentMethodByCampaign = async (
     if(!getPaymentMethod){
       return res.json(response.error({message:"payment method instruction on this campaign is not found or already deleted"}))
     }
-    const getCampaign = await campaign.findOne({_id: campaignId, deletedAt:null})
-    if(!getCampaign){
-      return res.json(response.error({message:"Campaign not found"}))
-    }
     const deletePaymentMethod = await paymentMethods.findByIdAndDelete(
       paymentMethodId
     )
@@ -130,3 +124,16 @@ export const deletePaymentMethodByCampaign = async (
     return res.json(response.error({message: err.message? err.message : UNKNOWN_ERROR_OCCURRED}))
   }
 };
+
+export const getPaymenetById = async(req:Request, res:Response)=>{
+  const paymentMethodId = req.params.paymentMethodId;
+  try {
+    const getPaymnetMethodSteps = await paymentMethods.findOne({_id:paymentMethodId, deletedAt:null})
+    if(!getPaymnetMethodSteps){
+        return res.json(response.error({message:"This campaign do not have any payment method instructions"}))
+    }
+    res.json(response.success({item:getPaymnetMethodSteps}))
+  } catch (err:any) {
+    return res.json(response.error({message:err.message ? err.message : UNKNOWN_ERROR_OCCURRED}))
+  }
+}

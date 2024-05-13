@@ -3,6 +3,7 @@ import {
   addPaymentMethod,
   deletePaymentMethodByCampaign,
   getAllPaymentMethods,
+  getPaymenetById,
   getPaymentMethodByCampaign,
   updatePaymentMethodByCampaign,
 } from "./services/default";
@@ -10,9 +11,10 @@ import {
 const router: Router = express.Router();
 
 router.get("/", getAllPaymentMethods);
-router.get("/:campaignId", getPaymentMethodByCampaign);
+router.get("/:paymentMethodId", getPaymenetById);
+router.get("/:campaignId/campaign", getPaymentMethodByCampaign);
 router.post("/", addPaymentMethod);
-router.patch("/:paymentMethodId/campaign/:campaignId", updatePaymentMethodByCampaign);
-router.delete("/:paymentMethodId/campaign/:campaignId", deletePaymentMethodByCampaign);
+router.patch("/:paymentMethodId", updatePaymentMethodByCampaign);
+router.delete("/:paymentMethodId", deletePaymentMethodByCampaign);
 
 export default router;
