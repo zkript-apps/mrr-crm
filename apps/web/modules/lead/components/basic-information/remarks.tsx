@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button'
+import { Separator } from '@/components/ui/separator'
 import { Textarea } from '@/components/ui/textarea'
 import React from 'react'
 
@@ -41,20 +42,24 @@ function Remarks() {
         <label className='text-sm'>
           Remarks
         </label>
-        <Textarea />
+        <Textarea placeholder='Enter your remarks here' className='h-32' />
         <div className='flex justify-end'>
           <Button className='w-1/6'>Add</Button>
         </div>
       </div>
       <div className='flex flex-col gap-4 max-h-96 overflow-auto'>
-        {remarks.map((remark) => (
-          <div className='border-b-2 p-4'>
-            <div className='text-xs text-gray-500'>
-              {remark.date}
+        {remarks.map((remark, index) => (
+          <div key={index}>
+            <div className='p-4'>
+              <div className='text-xs text-gray-500'>
+                {remark.date}
+              </div>
+              <div>
+                {remark.remark}
+              </div>
             </div>
-            <div>
-              {remark.remark}
-            </div>
+            {/* Render Separator only if it's not the last item */}
+            {index !== remarks.length - 1 && <Separator className='h-0.5' />}
           </div>
         ))}
       </div>

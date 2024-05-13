@@ -1,8 +1,8 @@
 "use client"
 import React from 'react'
-import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import BasicInformation from './components/basic-information'
+import PaymentMethods from './components/payment-methods'
 
 
 const agency = {
@@ -14,19 +14,14 @@ const agency = {
 const Lead = () => {
   return (
     <div className='flex flex-col gap-8 p-12'>
-      <div className='w-full flex justify-between items-center'>
-        <div className='flex flex-col gap-12'>
-          <div>
-            <div className='text-xl font-semibold'>
-              {agency.firstName} {agency.lastName}
-            </div>
-            <div className='text-gray-500'>
-              {agency.description}
-            </div>
-          </div>
-        </div>
+      <div className='flex flex-col gap-12'>
         <div>
-          <Button>Payment Method</Button>
+          <div className='text-xl font-semibold'>
+            {agency.firstName} {agency.lastName}
+          </div>
+          <div className='text-gray-500'>
+            {agency.description}
+          </div>
         </div>
       </div>
       <div>
@@ -35,9 +30,16 @@ const Lead = () => {
           <TabsList>
             <TabsTrigger value="basicInformation">Basic Information</TabsTrigger>
             <TabsTrigger value="paymentHistory">Payment History</TabsTrigger>
+            <TabsTrigger value="paymentMethods">Payment Methods</TabsTrigger>
           </TabsList>
           <TabsContent className='mt-8' value="basicInformation">
             <BasicInformation />
+          </TabsContent>
+          <TabsContent className='mt-8' value="paymentHistory">
+            Payment History
+          </TabsContent>
+          <TabsContent className='mt-8' value="paymentMethods">
+            <PaymentMethods />
           </TabsContent>
         </Tabs>
       </div>
