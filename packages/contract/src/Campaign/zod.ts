@@ -25,7 +25,7 @@ method:z.string(),
 date:z.string(),
 receiptAmount:z.number(),
 repayAmount:z.number(),
-fileName:z.string(),
+fileName:z.string().optional(),
 remarks:z.string()
 })
 

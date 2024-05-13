@@ -245,8 +245,12 @@ export const getCampaignLeadById = async (req: Request, res: Response) => {
   }
 };
 
+export const updatePaymentImage = async(req:Request, res:Response)=>{
+
+}
+
 export const updateCampaignLeadById = async (req: Request, res: Response) => {
-  const files = req.files
+  const files = req?.files?.file
   const campaignId = req.params.campaignId;
   const uniqueId = req.params.uniqueId;
   const { values, payments, remarks }: T_Update_Lead = req.body;
@@ -284,6 +288,7 @@ export const updateCampaignLeadById = async (req: Request, res: Response) => {
           message: "Record successfully updated",
         })
       );
+      console.log(req)
     } catch (err: any) {
       return res.json(
         response.error({
@@ -293,5 +298,6 @@ export const updateCampaignLeadById = async (req: Request, res: Response) => {
     }
   } else {
     return res.json(response.error(JSON.parse(isValidInput.error.message)));
+   
   }
 };

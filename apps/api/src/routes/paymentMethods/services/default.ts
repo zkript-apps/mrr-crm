@@ -116,10 +116,6 @@ export const deletePaymentMethodByCampaign = async (
     if(!getPaymentMethod){
       return res.json(response.error({message:"payment method instruction on this campaign is not found or already deleted"}))
     }
-    const getCampaign = await campaign.findOne({_id: campaignId, deletedAt:null})
-    if(!getCampaign){
-      return res.json(response.error({message:"Campaign not found"}))
-    }
     const deletePaymentMethod = await paymentMethods.findByIdAndDelete(
       paymentMethodId
     )

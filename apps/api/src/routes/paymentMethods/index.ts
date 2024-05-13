@@ -15,6 +15,6 @@ router.get("/:paymentMethodId", getPaymenetById);
 router.get("/:campaignId/campaign", getPaymentMethodByCampaign);
 router.post("/", addPaymentMethod);
 router.patch("/:paymentMethodId", updatePaymentMethodByCampaign);
-router.delete("/:paymentMethodId/campaign/:campaignId", deletePaymentMethodByCampaign);
+router.delete("/:paymentMethodId", deletePaymentMethodByCampaign);
 
 export default router;
