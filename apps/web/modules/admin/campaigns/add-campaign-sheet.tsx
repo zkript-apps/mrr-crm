@@ -22,15 +22,15 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-export default function EditCampaignSheet() {
+export default function AddCampaignSheet() {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="outline">Edit</Button>
+        <Button>Add New Campaign</Button>
       </SheetTrigger>
       <SheetContent>
         <SheetHeader>
-          <SheetTitle>Edit Campaign</SheetTitle>
+          <SheetTitle>Add Campaign</SheetTitle>
           <SheetDescription>
             Make changes to your profile here. Click save when you're done.
           </SheetDescription>
@@ -64,8 +64,8 @@ export default function EditCampaignSheet() {
                 ))}
             </SelectContent>
           </Select>
-            <Label className="text-right" htmlFor="excelFile">Excel File</Label>
-            <Input id="excelFile" type="file" className="col-span-3"/>
+          <Label className="text-right" htmlFor="picture">Excel File</Label>
+            <Input id="picture" type="file" className="col-span-3"/>
           </div>
         </div>
         <SheetFooter>

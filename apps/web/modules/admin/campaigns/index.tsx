@@ -3,6 +3,8 @@ import { Separator } from "@/components/ui/separator";
 import CampaignCard from '@/components/campaign-card';
 import EditCampaignSheet from './edit-campaign-sheet';
 import { Button } from '@/components/ui/button';
+import AddCampaignSheet from './add-campaign-sheet';
+import { MasterPasswordDialog } from '@/components/master-password-dialog';
 
 const AdminCampaigns = () => {
   const isAdmin = true; 
@@ -16,12 +18,12 @@ const AdminCampaigns = () => {
           Select your current campaign to retrieve the right data.
         </p>
         </div>
-        <div className='flex items-center flex-grow justify-end'>
-        <Button size="lg">Add New Campaign</Button>
+        <div className='flex items-center flex-grow justify-end space-x-4'>
+        <MasterPasswordDialog/>  <AddCampaignSheet/>
         </div>
       </div>
       <Separator className="my-6" />
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
         <CampaignCard isAdmin={isAdmin} />
         <CampaignCard isAdmin={isAdmin} />
         <CampaignCard isAdmin={isAdmin} />

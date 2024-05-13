@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -33,6 +33,7 @@ const getCampaignLocalStorage = () => {
 };
 
 export default function CampaignCard({ isAdmin }: { isAdmin?: boolean }) {
+  const router = useRouter();
   return (
     <Card>
       <CardHeader>
@@ -40,7 +41,15 @@ export default function CampaignCard({ isAdmin }: { isAdmin?: boolean }) {
         <CardDescription>Some description for the campaign.</CardDescription>
       </CardHeader>
       <CardFooter className="flex justify-between">
-        {isAdmin ? <EditCampaignSheet/> :
+        {isAdmin ? 
+        <div className="flex w-full">
+        <EditCampaignSheet/>
+        <Button 
+        className="ml-auto" 
+        variant="outline"
+        onClick={() => router.push("/admin/payment-methods/campaignId")}
+        >Payment Methods</Button>
+        </div>:
         <Button onClick={handleLocalStorageSubmit}>Select</Button>}
        
       </CardFooter>
