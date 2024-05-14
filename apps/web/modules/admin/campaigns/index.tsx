@@ -20,7 +20,7 @@ const AdminCampaigns = () => {
         </p>
         </div>
         <div className='flex items-center flex-grow justify-end space-x-4'>
-        <MasterPasswordDialog/>  <AddCampaignSheet/>
+        <AddCampaignSheet/>
         </div>
       </div>
       <Separator className="my-6" />
