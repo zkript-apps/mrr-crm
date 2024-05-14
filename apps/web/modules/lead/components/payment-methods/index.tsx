@@ -1,8 +1,5 @@
 import React, { useState } from 'react'
 import { SideNav } from './side-nav'
-import Gcash from './gcash';
-import Bdo from './bdo';
-import SecurityBank from './security-bank';
 import useGetPaymentMethods from '../payment-history/hooks/useGetPaymentMethods';
 import { Skeleton } from '@/components/skeleton';
 
@@ -20,7 +17,7 @@ export interface PaymentMethod {
 
 function PaymentMethods() {
   const { data: paymentMethods, isLoading: isGetPaymentMethodsLoading } = useGetPaymentMethods()
-  const [selectedItem, setSelectedItem] = useState(paymentMethods?.items[0]?.title || '');
+  const [selectedItem, setSelectedItem] = useState(paymentMethods?.items[0]?._id || '');
 
   const getSteps = (id: string) => {
     const method = paymentMethods?.items?.find((method: PaymentMethod) => method._id === id);

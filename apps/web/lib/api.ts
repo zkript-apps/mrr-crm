@@ -52,15 +52,21 @@ export class ApiService {
     return (await res).json();
   }
 
-  async patch(endpoint: string, body: any) {
+  async patch(endpoint: string, body: any, contentType?: string) {
     const header = this.constructHeader();
 
-    const res = fetch(`${endpoint}`, {
+    //TODO: setup options for header
+    if (contentType) {
+      header["Content-Type"] = contentType;
+    }
+  
+    const res = await fetch(endpoint, {
       method: "PATCH",
-      body: JSON.stringify(body),
+      body: contentType === "multipart/form-data" ? body : JSON.stringify(body),
       headers: header,
     });
-    return (await res).json();
+  
+    return res.json();
   }
 
   async delete(endpoint: string, payload?: { [key: string]: string }) {

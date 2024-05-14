@@ -19,6 +19,7 @@ export function SideNav({ links, setSelectedItem, selectedItem }: NavProps) {
     if (!selectedItem && links.length > 0) {
       setSelectedItem(links[0]?._id);
     }
+    console.log(selectedItem)
   }, [selectedItem, links, setSelectedItem]);
   
   return (

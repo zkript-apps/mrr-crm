@@ -26,17 +26,16 @@ const UploadImage = ({ isLoading, leadId }: { isLoading: boolean, leadId: string
     if (file) {
       const formData = new FormData();
       formData.append('image', file);
-      mutate({ image: formData}, {
+      mutate(formData, {
         onSuccess: () => {
           queryClient.invalidateQueries({
             queryKey: ['payment-history'],
             refetchType: 'active',
           });
-          toast.success("Image successfully uploaded")
-          setFile(null)
+          toast.success("Image successfully uploaded");
         },
         onError() {
-          toast.error("An unexpected error has occurred, try again")
+          toast.error("An unexpected error has occurred, try again");
         }
       });
     }

@@ -26,19 +26,17 @@ import { Button } from '@/components/ui/button'
 import useUpdateCampaignLeadById, { T_Campaign_Lead } from '../basic-information/hooks/useUpdateCampaignLeadById'
 import { useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
-import { Upload } from 'lucide-react'
 import UploadImage from './upload-image'
 
 function AddNewPaymentModal({ children, campaignLead, leadId }: { children: ReactNode, campaignLead: T_Campaign_Lead, leadId: string }) {
   const formRef = useRef<HTMLFormElement>(null)
   const queryClient = useQueryClient();
-  const { data: paymentMethods, isLoading: isGetPaymentMethodsLoading } = useGetPaymentMethods()
   const { mutate, isPending: isUpdateCampaignLeadLoading } = useUpdateCampaignLeadById("663ee9c094a8bb883db97936", leadId)
 
   const [formData, setFormData] = useState({
     method: '',
-    repayAmount: 0,
-    receiptAmount: 0,
+    repayAmount: undefined,
+    receiptAmount: undefined,
     remarks: ''
   })
 
@@ -47,13 +45,6 @@ function AddNewPaymentModal({ children, campaignLead, leadId }: { children: Reac
     setFormData(prevData => ({
       ...prevData,
       [name]: value
-    }))
-  }
-
-  const handleSelectChange = (value: string) => {
-    setFormData(prevData => ({
-      ...prevData,
-      method: value
     }))
   }
 
@@ -103,18 +94,7 @@ function AddNewPaymentModal({ children, campaignLead, leadId }: { children: Reac
                 Payment Method
               </label>
               <div>
-                <Select disabled={isUpdateCampaignLeadLoading || isGetPaymentMethodsLoading} value={formData.method} onValueChange={handleSelectChange}>
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Select method" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      {paymentMethods?.items?.map((method: { title: string }) => (
-                        <SelectItem value={method.title}>{method.title}</SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
+                <Input required disabled={isUpdateCampaignLeadLoading} name="method" value={formData.method} onChange={handleChange} />
               </div>
             </div>
             <div className="flex gap-4 mt-4">
@@ -123,7 +103,7 @@ function AddNewPaymentModal({ children, campaignLead, leadId }: { children: Reac
                   Repay Amount
                 </label>
                 <div>
-                  <Input disabled={isUpdateCampaignLeadLoading} type='number' name="repayAmount" value={formData.repayAmount} onChange={handleChange} />
+                  <Input required disabled={isUpdateCampaignLeadLoading} type='number' name="repayAmount" value={formData.repayAmount} onChange={handleChange} />
                 </div>
               </div>
               <div className="flex flex-col gap-1 w-1/2">
@@ -131,7 +111,7 @@ function AddNewPaymentModal({ children, campaignLead, leadId }: { children: Reac
                   Receipt Amount
                 </label>
                 <div>
-                  <Input disabled={isUpdateCampaignLeadLoading} type='number' name="receiptAmount" value={formData.receiptAmount} onChange={handleChange} />
+                  <Input required disabled={isUpdateCampaignLeadLoading} type='number' name="receiptAmount" value={formData.receiptAmount} onChange={handleChange} />
                 </div>
               </div>
             </div>
@@ -140,7 +120,7 @@ function AddNewPaymentModal({ children, campaignLead, leadId }: { children: Reac
                 Remarks
               </label>
               <div>
-                <Textarea disabled={isUpdateCampaignLeadLoading} name="remarks" value={formData.remarks} onChange={handleChange} />
+                <Textarea required disabled={isUpdateCampaignLeadLoading} name="remarks" value={formData.remarks} onChange={handleChange} />
               </div>
             </div>
 
