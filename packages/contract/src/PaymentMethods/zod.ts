@@ -16,7 +16,8 @@ export const Z_PaymentMethod = z.object({
 export const Z_Add_PaymentMethod = z.object({
     campaignId: z.string(),
     title: z.string(),
-    steps: z.array(Z_PaymentMethodStep)
+    steps: z.array(Z_PaymentMethodStep),
+    masterPassword: z.string()
   });
 
   export const Z_Update_PaymentMethod = z.object({
