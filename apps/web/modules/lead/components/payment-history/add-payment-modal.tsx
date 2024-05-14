@@ -70,7 +70,7 @@ function AddNewPaymentModal({ children, campaignLead, leadId }: { children: Reac
           queryKey: ['campaign-lead'],
           refetchType: 'active',
         });
-        toast.success("Remarks saved")
+        toast.success("Payment saved")
       },
       onError() {
         toast.error("An unexpected error has occurred, try again")

@@ -13,7 +13,7 @@ export class ApiService {
 
     const res = {
       ...(!removeContentType && {
-        "Content-Type": isFormData ? EContentType.formData : EContentType.JSON,
+        "Content-Type": isFormData ? EContentType.formData : "application/json",
       }),
       ...(accessToken && this.isAuthRequired
         ? { Authorization: `Bearer ${accessToken}` }
@@ -42,30 +42,34 @@ export class ApiService {
     return (await res).json();
   }
 
-  async post<T = any>(endpoint: string, body: any): Promise<T> {
-    const header = this.constructHeader();
+  async post<T = any>(
+    endpoint: string, 
+    body: any,
+    raw?: boolean,
+    removeContentType?: boolean
+  ): Promise<T> {
+    const otherOptions = this.constructHeader(removeContentType);
     const res = fetch(`${endpoint}`, {
       method: "POST",
-      body: JSON.stringify(body),
-      headers: header,
+      body: !raw ? JSON.stringify(body) : body,
+      ...otherOptions
     });
     return (await res).json();
   }
 
-  async patch(endpoint: string, body: any, contentType?: string) {
-    const header = this.constructHeader();
-
-    //TODO: setup options for header
-    if (contentType) {
-      header["Content-Type"] = contentType;
-    }
-  
+  //TODO: fix if body is not FormData use application/json as contentType, right now it is using text/plain;charset=UTF-8
+  async patch(
+    endpoint: string, 
+    body: any,
+    isFormData?: boolean,
+    removeContentType?: boolean
+  ) {
+    const otherOptions = this.constructHeader(isFormData, removeContentType);
     const res = await fetch(endpoint, {
       method: "PATCH",
-      body: contentType === "multipart/form-data" ? body : JSON.stringify(body),
-      headers: header,
+      body: !isFormData ? JSON.stringify(body) : body,
+      ...otherOptions
     });
-  
     return res.json();
   }
 
