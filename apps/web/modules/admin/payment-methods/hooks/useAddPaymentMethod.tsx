@@ -1,4 +1,5 @@
-import { ApiService } from "@/common/service/api";
+import { ApiService } from "@/lib/api";
+import { API_PAYMENT_METHODS } from "@/lib/api-routes";
 import { useMutation } from "@tanstack/react-query";
 
 type Step = {
@@ -13,7 +14,7 @@ export type T_PaymentMethod = {
 export async function addPaymentMethod(props: T_PaymentMethod) {
   console.log(props)
   const apiService = new ApiService();
-  return await apiService.post("/api/payment-methods", props);
+  return await apiService.post(API_PAYMENT_METHODS, props);
 }
 
 function useAddPaymentMethod() {

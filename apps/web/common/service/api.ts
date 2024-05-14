@@ -11,7 +11,7 @@ export class ApiService {
 
   constructor(hasAuthentication = true, source: "mrr-crm" | "mock" = "mrr-crm") {
     this.BASE_URL =
-      source == "mrr-crm" ? process.env.API_IVMS : process.env.API_MOCK;
+      source == "mrr-crm" ? process.env.API_URL : process.env.API_URL;
     this.isAuthRequired = hasAuthentication;
   }
 

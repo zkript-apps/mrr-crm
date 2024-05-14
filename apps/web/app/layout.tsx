@@ -1,7 +1,9 @@
-import QueryWrapper from "@/components/QueryWrapper";
+import QueryWrapper from "@/components/query-wrapper";
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { Toaster } from "@/components/ui/sonner";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -17,11 +19,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-      <QueryWrapper>
-        {children}
-      </QueryWrapper>
+        <QueryWrapper>
+          {children}
+        </QueryWrapper>
+        <Toaster richColors position="top-right" />
       </body>
-      
     </html>
   );
 }
