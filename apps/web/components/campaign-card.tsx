@@ -17,6 +17,7 @@ const campaignTitle = "Lazada PRT";
 const handleLocalStorageSubmit = () => {
   const currentTime = new Date();
   const data = {
+    campaignId: "663ee9c094a8bb883db97936",
     name: campaignTitle,
     date: currentTime.toString()
   };

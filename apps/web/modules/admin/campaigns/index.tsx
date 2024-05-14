@@ -2,7 +2,6 @@ import React from 'react';
 import { Separator } from "@/components/ui/separator";
 import CampaignCard from '@/components/campaign-card';
 import EditCampaignSheet from './edit-campaign-sheet';
-import { Button } from '@/components/ui/button';
 import AddCampaignSheet from './add-campaign-sheet';
 import { MasterPasswordDialog } from '@/components/master-password-dialog';
 
