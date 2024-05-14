@@ -1,8 +1,11 @@
 import { ApiService } from "@/lib/api";
 import { API_PAYMENT_METHODS } from "@/lib/api-routes";
 import { useMutation } from "@tanstack/react-query";
+import { ReactNode } from "react";
 
 type Step = {
+  step?: ReactNode;
+  _id?: string;
   instruction: string;
 };
 

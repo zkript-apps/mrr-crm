@@ -38,7 +38,7 @@ export const getAllPaymentMethods = async (req: Request, res: Response) => {
 export const getPaymentMethodByCampaign = async (req: Request,res: Response) => {
   const campaignId = req.params.campaignId;
   try {
-    const getPaymnetMethodSteps = await paymentMethods.findOne({campaign:campaignId, deletedAt:null})
+    const getPaymnetMethodSteps = await paymentMethods.find({campaign:campaignId, deletedAt:null})
     if(!getPaymnetMethodSteps){
         return res.json(response.error({message:"This campaign do not have any payment method instructions"}))
     }
