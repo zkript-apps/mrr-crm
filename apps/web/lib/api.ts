@@ -7,7 +7,6 @@ enum EContentType {
 
 export class ApiService {
   private isAuthRequired: boolean = true;
-  private url = 'http://localhost:9000'
   private constructHeader(isFormData = false, removeContentType = false) {
     const accessToken = Cookies.get("accessToken");
 
@@ -32,7 +31,7 @@ export class ApiService {
     const header = this.constructHeader();
 
     const res = fetch(
-      `${this.url}${endpoint}${params ? `?${reqParams}` : ""}`,
+      `${endpoint}${params ? `?${reqParams}` : ""}`,
       {
         headers: header,
         ...(signal ? { signal } : {}),
@@ -44,7 +43,7 @@ export class ApiService {
 
   async post<T = any>(endpoint: string, body: any): Promise<T> {
     const header = this.constructHeader();
-    const res = fetch(`${this.url}${endpoint}`, {
+    const res = fetch(`${endpoint}`, {
       method: "POST",
       body: JSON.stringify(body),
       headers: header,
@@ -55,7 +54,7 @@ export class ApiService {
   async patch(endpoint: string, body: any) {
     const header = this.constructHeader();
 
-    const res = fetch(`${this.url}${endpoint}`, {
+    const res = fetch(`${endpoint}`, {
       method: "PATCH",
       body: JSON.stringify(body),
       headers: header,
@@ -66,7 +65,7 @@ export class ApiService {
   async delete(endpoint: string, payload?: { [key: string]: string }) {
     const header = this.constructHeader();
 
-    const res = fetch(`${this.url}${endpoint}`, {
+    const res = fetch(`${endpoint}`, {
       method: "DELETE",
       headers: header,
     });

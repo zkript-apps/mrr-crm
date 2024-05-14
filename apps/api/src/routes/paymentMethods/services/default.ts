@@ -55,7 +55,7 @@ export const addPaymentMethod = async (req: Request, res: Response) => {
     try {
       const getCampaign = await campaign.findOne({_id: campaignId, deletedAt:null})
       if(!getCampaign){
-        return res.json(response.error({message:"This campaign is not exist on campaigns record"}))
+        return res.json(response.error({message:"This campaign is not exist on campaigns record"})) 
       }
       const newPaymentMethodSteps = new paymentMethods({
         campaign:campaignId,
@@ -64,11 +64,15 @@ export const addPaymentMethod = async (req: Request, res: Response) => {
       })
       const createdPaymentMethodSteps = await newPaymentMethodSteps.save()
       res.json(response.success({item:createdPaymentMethodSteps, message:"Payment methods steps successfully created"}))
+      console.log("Payment methods steps successfully created")
     } catch (err:any) {
+      console.log(err)
       return res.json(response.error({message: err.message? err.message : UNKNOWN_ERROR_OCCURRED}))
     }
   }else{
+   
     return res.json(response.error({message:JSON.parse(isValidInput.error.message)}))
+    
   }
 };
 
