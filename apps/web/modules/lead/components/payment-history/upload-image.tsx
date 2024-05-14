@@ -25,9 +25,8 @@ const UploadImage = ({ isLoading, leadId }: { isLoading: boolean, leadId: string
   const onUpload = () => {
     if (file) {
       const formData = new FormData();
-      formData.append('file', file);
-
-      mutate({ file: formData}, {
+      formData.append('image', file);
+      mutate({ image: formData}, {
         onSuccess: () => {
           queryClient.invalidateQueries({
             queryKey: ['payment-history'],

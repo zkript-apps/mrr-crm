@@ -32,7 +32,7 @@ import UploadImage from './upload-image'
 function AddNewPaymentModal({ children, campaignLead, leadId }: { children: ReactNode, campaignLead: T_Campaign_Lead, leadId: string }) {
   const formRef = useRef<HTMLFormElement>(null)
   const queryClient = useQueryClient();
-  const { data } = useGetPaymentMethods()
+  const { data: paymentMethods, isLoading: isGetPaymentMethodsLoading } = useGetPaymentMethods()
   const { mutate, isPending: isUpdateCampaignLeadLoading } = useUpdateCampaignLeadById("663ee9c094a8bb883db97936", leadId)
 
   const [formData, setFormData] = useState({
@@ -76,7 +76,7 @@ function AddNewPaymentModal({ children, campaignLead, leadId }: { children: Reac
     mutate(formattedData, {
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: ['payment-history'],
+          queryKey: ['campaign-lead'],
           refetchType: 'active',
         });
         toast.success("Remarks saved")
@@ -103,15 +103,15 @@ function AddNewPaymentModal({ children, campaignLead, leadId }: { children: Reac
                 Payment Method
               </label>
               <div>
-                <Select disabled={isUpdateCampaignLeadLoading} value={formData.method} onValueChange={handleSelectChange}>
+                <Select disabled={isUpdateCampaignLeadLoading || isGetPaymentMethodsLoading} value={formData.method} onValueChange={handleSelectChange}>
                   <SelectTrigger className="w-[180px]">
                     <SelectValue placeholder="Select method" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      <SelectItem value="GCASH">GCASH</SelectItem>
-                      <SelectItem value="BDO">BDO</SelectItem>
-                      <SelectItem value="Security bank">Security bank</SelectItem>
+                      {paymentMethods?.items?.map((method: { title: string }) => (
+                        <SelectItem value={method.title}>{method.title}</SelectItem>
+                      ))}
                     </SelectGroup>
                   </SelectContent>
                 </Select>

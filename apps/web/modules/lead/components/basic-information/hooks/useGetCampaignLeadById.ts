@@ -9,7 +9,7 @@ export async function getCampaignLeadById(campaignId: string, uniqueId: string) 
 
 function useGetCampaignLeadById(campaignId: string, uniqueId: string) {
   const query = useQuery({
-    queryKey: ['campaign', 'title-description', campaignId, uniqueId],
+    queryKey: ['campaign-lead', campaignId, uniqueId],
     queryFn: () => getCampaignLeadById(campaignId, uniqueId),
     enabled: !!campaignId || !!uniqueId
   })

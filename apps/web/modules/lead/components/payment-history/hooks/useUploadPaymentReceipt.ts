@@ -4,7 +4,7 @@ import { useMutation } from "@tanstack/react-query"
 
 
 export interface T_Campaign_Lead_Image_File_Name {
-  file: FormData;
+  image: FormData;
 }
 
 export async function uploadPaymentReceipt(campaignId: string, uniqueId: string, data: T_Campaign_Lead_Image_File_Name) {
