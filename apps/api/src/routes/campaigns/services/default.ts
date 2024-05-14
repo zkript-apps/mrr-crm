@@ -14,6 +14,7 @@ import {
 } from "@repo/contract";
 import { Request, Response } from "express";
 import path from "path";
+import { MASTER_PASSWORD } from "@/common/constants/ev";
 
 const response = new ResponseService();
 export const getAllCampaigns = async (req: Request, res: Response) => {
@@ -58,8 +59,9 @@ export const getCampaign = async (req: Request, res: Response) => {
 };
 
 export const addCampain = async (req: Request, res: Response) => {
-  const { title, description, leadUniqueKey, patterns, leads }: T_Add_Campaign =
+  const { title, description, leadUniqueKey, patterns, leads, masterPassword }: T_Add_Campaign =
     req.body;
+  if(masterPassword !== MASTER_PASSWORD) {
   const isValidInput = Z_Add_Campaign.safeParse(req.body);
   if (isValidInput.success) {
     try {
@@ -93,11 +95,15 @@ export const addCampain = async (req: Request, res: Response) => {
       response.error({ message: JSON.parse(isValidInput.error.message) })
     );
   }
+} else {
+  return res.json(
+    response.error({ message: "Unauthorized" })
+  );
+}
 };
 
 export const updateCampaign = async (req: Request, res: Response) => {
   const campaignId = req.params.campaignId;
-  const { title, description }: T_Update_Campaign = req.body;
   const isValidInput = Z_Update_Campaign.safeParse(req.body);
   if (isValidInput.success) {
     try {

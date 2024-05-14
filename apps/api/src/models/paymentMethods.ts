@@ -16,7 +16,11 @@ const paymentMethod  = new Schema({
     type: mongoose.Types.ObjectId,
     ref: "Campaign",
     required: true,
-    unique:true
+    unique: false
+  },
+  title: {
+    type: String,
+    required: true
   },
   steps: [steps],
   createdAt: {

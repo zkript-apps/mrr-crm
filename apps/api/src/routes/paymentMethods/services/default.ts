@@ -49,16 +49,17 @@ export const getPaymentMethodByCampaign = async (req: Request,res: Response) => 
 };
 
 export const addPaymentMethod = async (req: Request, res: Response) => {
-    const {campaignId, steps}:T_Add_PaymentMethod = req.body
+    const {campaignId, title, steps}:T_Add_PaymentMethod = req.body
     const isValidInput = Z_Add_PaymentMethod.safeParse(req.body)
     if(isValidInput.success){
     try {
       const getCampaign = await campaign.findOne({_id: campaignId, deletedAt:null})
       if(!getCampaign){
-        return res.json(response.error({message:"This campaign is not exist on campaigns record"}))
+        return res.json(response.error({message:"This campaign is not exist on campaigns record"})) 
       }
       const newPaymentMethodSteps = new paymentMethods({
         campaign:campaignId,
+        title: title,
         steps:steps,
         createdAt:Date.now()
       })
@@ -69,6 +70,7 @@ export const addPaymentMethod = async (req: Request, res: Response) => {
     }
   }else{
     return res.json(response.error({message:JSON.parse(isValidInput.error.message)}))
+    
   }
 };
 
