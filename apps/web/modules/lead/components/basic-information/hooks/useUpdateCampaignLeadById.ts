@@ -9,13 +9,13 @@ export interface T_Payment {
   repayAmount: number;
   fileName: string;
   remarks: string;
-  _id: string;
+  _id?: string;
 }
 
 interface Remark {
   comment: string;
   date: string;
-  _id: string;
+  _id?: string;
 }
 
 export interface T_Campaign_Lead {

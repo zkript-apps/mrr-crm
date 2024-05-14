@@ -31,10 +31,9 @@ export default function PaymentHistoryCard({ payment }: { payment: T_Payment }) 
         <CardDescription>{format(new Date(payment.date), "MMMM d, yyyy h:mm a")}</CardDescription>
       </CardHeader>
       <CardFooter className="flex justify-between">
-        <Button size="sm">Select</Button>
         <AlertDialog>
           <AlertDialogTrigger>
-            <Button variant={'secondary'} size="sm">View</Button>
+            <Button size="sm">View</Button>
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
@@ -49,9 +48,9 @@ export default function PaymentHistoryCard({ payment }: { payment: T_Payment }) 
             <div className="w-full">
               <div className="flex">
                 <div className="flex flex-col w-1/2">
-                  <div className="text-sm text-gray-500">
+                  <label className="text-sm text-gray-500">
                     Repay Amount
-                  </div>
+                  </label>
                   <div className="text-lg">
                     ₱{payment.repayAmount}
                   </div>
@@ -75,8 +74,7 @@ export default function PaymentHistoryCard({ payment }: { payment: T_Payment }) 
               </div>
             </div>
             <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction>Continue</AlertDialogAction>
+              <AlertDialogCancel>Close</AlertDialogCancel>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>

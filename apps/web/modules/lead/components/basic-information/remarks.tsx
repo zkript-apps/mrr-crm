@@ -38,7 +38,7 @@ function Remarks({ campaignLead, isLoading, leadId }: { campaignLead: T_Campaign
         toast.success("Remarks saved")
       },
       onError() {
-        console.log("error")
+        toast.error("An unexpected error has occurred, try again")
       }
     })
   }
