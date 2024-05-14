@@ -1,14 +1,13 @@
-import Excel from '@/modules/admin/excel'
-import LoginForm from '@/modules/login'
+import Link from 'next/link'
 import React from 'react'
 
 const LoginPage = () => {
   return (
-    <>
-    <LoginForm/>
-    <Excel/>
-    </>
-    
+    <div className="flex gap-3 p-4">
+      <Link href="/search" className="underline text-blue-400">Search Lead</Link>
+      <Link href="/campaigns" className="underline text-blue-400">Campaigns</Link>
+      <Link href="/admin/campaigns" className="underline text-blue-400">Admin</Link>
+    </div>
   )
 }
 
