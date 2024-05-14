@@ -49,7 +49,7 @@ export const getPaymentMethodByCampaign = async (req: Request,res: Response) => 
 };
 
 export const addPaymentMethod = async (req: Request, res: Response) => {
-    const {campaignId, steps}:T_Add_PaymentMethod = req.body
+    const {campaignId, title, steps}:T_Add_PaymentMethod = req.body
     const isValidInput = Z_Add_PaymentMethod.safeParse(req.body)
     if(isValidInput.success){
     try {
@@ -59,18 +59,16 @@ export const addPaymentMethod = async (req: Request, res: Response) => {
       }
       const newPaymentMethodSteps = new paymentMethods({
         campaign:campaignId,
+        title: title,
         steps:steps,
         createdAt:Date.now()
       })
       const createdPaymentMethodSteps = await newPaymentMethodSteps.save()
       res.json(response.success({item:createdPaymentMethodSteps, message:"Payment methods steps successfully created"}))
-      console.log("Payment methods steps successfully created")
     } catch (err:any) {
-      console.log(err)
       return res.json(response.error({message: err.message? err.message : UNKNOWN_ERROR_OCCURRED}))
     }
   }else{
-   
     return res.json(response.error({message:JSON.parse(isValidInput.error.message)}))
     
   }

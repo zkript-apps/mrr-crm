@@ -29,13 +29,14 @@ export default function AddPaymentMethodSheet() {
     const campaignDataString = localStorage.getItem("campaign");
     if(campaignDataString){
     const campaignData = JSON.parse(campaignDataString);
-    const { ...rest } = data;
+    const { title, ...rest } = data;
     const steps = Object.keys(rest.steps).map((key) => ({
         step: parseInt(key) + 1,
         instruction: rest.steps[parseInt(key)]?.instruction || '', 
     }));
     const paymentMethodData = {
         campaignId: campaignData.campaignId,
+        title,
         steps
     };
     mutate(paymentMethodData);
@@ -80,6 +81,7 @@ export default function AddPaymentMethodSheet() {
               Title
             </Label>
             <Input 
+            {...register("title")} 
              id="name" className="col-span-3" />
           </div>
           {steps.map(step => (

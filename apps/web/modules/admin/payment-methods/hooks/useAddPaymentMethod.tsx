@@ -8,11 +8,11 @@ type Step = {
 
 export type T_PaymentMethod = {
   campaignId: string;
+  title: string,
   steps: Step[];
 };
 
 export async function addPaymentMethod(props: T_PaymentMethod) {
-  console.log(props)
   const apiService = new ApiService();
   return await apiService.post(API_PAYMENT_METHODS, props);
 }
