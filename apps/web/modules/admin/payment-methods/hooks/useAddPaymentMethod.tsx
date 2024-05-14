@@ -11,6 +11,7 @@ type Step = {
 
 export type T_PaymentMethod = {
   campaignId: string;
+  masterPassword: string;
   title: string,
   steps: Step[];
 };
