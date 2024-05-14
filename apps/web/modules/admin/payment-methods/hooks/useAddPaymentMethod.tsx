@@ -13,7 +13,7 @@ export type T_PaymentMethod = {
 export async function addPaymentMethod(props: T_PaymentMethod) {
   console.log(props)
   const apiService = new ApiService();
-  return await apiService.post("API", props);
+  return await apiService.post("/api/payment-methods", props);
 }
 
 function useAddPaymentMethod() {
