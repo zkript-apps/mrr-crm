@@ -41,6 +41,9 @@ importers:
       express-fileupload:
         specifier: ^1.5.0
         version: 1.5.0
+      fs:
+        specifier: 0.0.1-security
+        version: 0.0.1-security
       google-auth-library:
         specifier: ^9.7.0
         version: 9.9.0
@@ -56,6 +59,9 @@ importers:
       ts-node:
         specifier: ^10.9.2
         version: 10.9.2(@types/node@20.11.24)(typescript@5.3.3)
+      uuid:
+        specifier: ^9.0.1
+        version: 9.0.1
     devDependencies:
       '@types/cors':
         specifier: ^2.8.17
@@ -72,6 +78,9 @@ importers:
       '@types/node':
         specifier: ^20.11.0
         version: 20.11.24
+      '@types/uuid':
+        specifier: ^9.0.8
+        version: 9.0.8
       nodemon:
         specifier: ^3.0.1
         version: 3.1.0
@@ -967,6 +976,10 @@ packages:
       '@types/http-errors': 2.0.4
       '@types/node': 20.11.24
       '@types/send': 0.17.4
+    dev: true
+
+  /@types/uuid@9.0.8:
+    resolution: {integrity: sha512-jg+97EGIcY9AGHJJRaaPVgetKDsrTgbRjQ5Msgjh/DQKEFl0DtyRr/VCOyD1T2R1MNeWPK/u7JoGhlDZnKBAfA==}
     dev: true
 
   /@types/webidl-conversions@7.0.3:
@@ -2768,6 +2781,10 @@ packages:
   /fs.realpath@1.0.0:
     resolution: {integrity: sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==}
     dev: true
+
+  /fs@0.0.1-security:
+    resolution: {integrity: sha512-3XY9e1pP0CVEUCdj5BmfIZxRBTSDycnbqhIOGec9QYtmVH2fbLpj86CFWkrNOkt/Fvty4KZG5lTglL9j/gJ87w==}
+    dev: false
 
   /fsevents@2.3.3:
     resolution: {integrity: sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==}
