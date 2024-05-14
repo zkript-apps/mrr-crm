@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import * as XLSX from 'xlsx';
+import { useForm, SubmitHandler } from "react-hook-form"
 
 import {
   Sheet,
@@ -22,10 +23,17 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { useState } from "react";
+import useAddCampaign from "./hooks/useAddCampaign";
 
 export default function AddCampaignSheet() {
+  const { mutate } = useAddCampaign();
+  const {
+    register,
+    handleSubmit
+  } = useForm<any>()
   const [patterns, setPatterns] = useState<string[] | null>(null);
-  const [leadValues, setLeadValues] = useState(null);
+  const [leadValues, setLeadValues] = useState<any[] | null>(null);
+  const [leadUniqueKey, setLeadUniqueKey] = useState<string | null>(null);
   const handleFileUpload = (e: any) => {
     const file = e.target.files[0];
     const reader = new FileReader();
@@ -42,13 +50,37 @@ export default function AddCampaignSheet() {
 
     reader.readAsBinaryString(file);
   };
-  console.log('patters', patterns)
+
+
+
+  const onSubmit: SubmitHandler<any> = (data: any) => {
+    const { title, description, masterPassword } = data;
+    const campaignData = {
+      title,
+      description,
+      leadUniqueKey,
+      masterPassword,
+      patterns: patterns?.map(pattern => ({
+        name: pattern,
+        text: pattern.charAt(0).toUpperCase() + pattern.slice(1).replace(/_/g, ' '),
+      })),
+      leads: leadValues?.map(lead => ({
+        values: lead,
+        remarks: [],
+        payments: [],
+      })),
+    };
+    mutate(campaignData)
+  };
+  
+
   return (
     <Sheet>
       <SheetTrigger asChild>
         <Button>Add New Campaign</Button>
       </SheetTrigger>
       <SheetContent>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <SheetHeader>
           <SheetTitle>Add Campaign</SheetTitle>
           <SheetDescription>
@@ -60,29 +92,38 @@ export default function AddCampaignSheet() {
             <Label htmlFor="name" className="text-right">
               Title
             </Label>
-            <Input id="title" required className="col-span-3" />
+            <Input 
+             {...register("title")} 
+            id="title" required className="col-span-3" />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="username" className="text-right">
               Description
             </Label>
-            <Input id="description" required className="col-span-3" />
+            <Input 
+             {...register("description")} 
+            id="description" required className="col-span-3" />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
           <Label className="text-right" htmlFor="picture">Excel File</Label>
             <Input id="picture" type="file" className="col-span-3" onChange={handleFileUpload}/>
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
+            <Label
+             htmlFor="username" className="text-right">
               Unique Id
             </Label>
-            <Select required disabled={!patterns}>
+            <Select onValueChange={(selectedValue) => {            
+              setLeadUniqueKey(selectedValue);
+              }} required disabled={!patterns}>
               <SelectTrigger className="col-span-3">
                 <SelectValue placeholder="Select" />
               </SelectTrigger>
               <SelectContent>
                 {patterns && patterns?.map((option) => (
-                  <SelectItem key={option} value={option}>
+                  <SelectItem
+               
+                   key={option} value={option}>
                     {option}
                   </SelectItem>
                 ))}
@@ -93,7 +134,9 @@ export default function AddCampaignSheet() {
             <Label htmlFor="username" className="text-right">
               Master Password
             </Label>
-            <Input id="description" required className="col-span-3" />
+            <Input
+            {...register("masterPassword")}
+             id="description" required className="col-span-3" />
           </div>
         </div>
         <SheetFooter>
@@ -101,6 +144,7 @@ export default function AddCampaignSheet() {
             <Button type="submit">Save changes</Button>
           </SheetClose>
         </SheetFooter>
+        </form>
       </SheetContent>
     </Sheet>
   )

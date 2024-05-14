@@ -3,7 +3,6 @@ import React from 'react';
 import { Separator } from "@/components/ui/separator";
 import CampaignCard from '@/components/campaign-card';
 import AddCampaignSheet from './add-campaign-sheet';
-import { MasterPasswordDialog } from '@/components/master-password-dialog';
 import useGetCampaigns from './hooks/useGetCampaigns';
 
 const AdminCampaigns = () => {
