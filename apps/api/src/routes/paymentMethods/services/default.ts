@@ -7,14 +7,22 @@ import campaign from "@/models/campaign"
 const response = new ResponseService();
 export const getAllPaymentMethods = async (req: Request, res: Response) => {
   try {
-    const getPaymentMethods = await paymentMethods.find({ deletedAt: null });
+    const getPaymentMethods = await paymentMethods.find({ deletedAt: null }).populate("campaign");
     const countPaymentMethods = await paymentMethods
       .find({ deletedAt: null })
       .countDocuments();
+      const newPaymentMethods = getPaymentMethods.map((item:any)=>(
+        {
+          _id:item._id,
+          title:item.campaign.title,
+          description:item.campaign.description,
+          steps:item.steps
+        }
+      ))
     if (countPaymentMethods === 0) {
       return res.json(
         response.success({
-          items: getPaymentMethods,
+          items: newPaymentMethods,
           allItemCount: 0,
           message: "No payment methods instruction found",
         })
@@ -22,7 +30,7 @@ export const getAllPaymentMethods = async (req: Request, res: Response) => {
     }
     res.json(
       response.success({
-        items: getPaymentMethods,
+        items: newPaymentMethods,
         allItemCount: countPaymentMethods,
       })
     );
@@ -38,11 +46,17 @@ export const getAllPaymentMethods = async (req: Request, res: Response) => {
 export const getPaymentMethodByCampaign = async (req: Request,res: Response) => {
   const campaignId = req.params.campaignId;
   try {
-    const getPaymnetMethodSteps = await paymentMethods.findOne({campaign:campaignId, deletedAt:null})
+    const getPaymnetMethodSteps:any = await paymentMethods.findOne({campaign:campaignId, deletedAt:null}).populate("campaign")
     if(!getPaymnetMethodSteps){
         return res.json(response.error({message:"This campaign do not have any payment method instructions"}))
     }
-    res.json(response.success({item:getPaymnetMethodSteps}))
+    const newPaymentMethod = {
+      _id:getPaymnetMethodSteps._id,
+      title:getPaymnetMethodSteps.campaign.title,
+      description:getPaymnetMethodSteps.description,
+      steps:getPaymnetMethodSteps.steps
+    }
+    res.json(response.success({item:newPaymentMethod}))
   } catch (err:any) {
     return res.json(response.error({message:err.message ? err.message : UNKNOWN_ERROR_OCCURRED}))
   }
@@ -128,11 +142,17 @@ export const deletePaymentMethodByCampaign = async (
 export const getPaymenetById = async(req:Request, res:Response)=>{
   const paymentMethodId = req.params.paymentMethodId;
   try {
-    const getPaymnetMethodSteps = await paymentMethods.findOne({_id:paymentMethodId, deletedAt:null})
+    const getPaymnetMethodSteps:any = await paymentMethods.findOne({_id:paymentMethodId, deletedAt:null}).populate("campaign")
     if(!getPaymnetMethodSteps){
         return res.json(response.error({message:"This campaign do not have any payment method instructions"}))
     }
-    res.json(response.success({item:getPaymnetMethodSteps}))
+    const newPaymentMethod = {
+      _id:getPaymnetMethodSteps._id,
+      title:getPaymnetMethodSteps.campaign.title,
+      description:getPaymnetMethodSteps.description,
+      steps:getPaymnetMethodSteps.steps
+    }
+    res.json(response.success({item:newPaymentMethod}))
   } catch (err:any) {
     return res.json(response.error({message:err.message ? err.message : UNKNOWN_ERROR_OCCURRED}))
   }

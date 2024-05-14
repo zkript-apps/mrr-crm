@@ -1,6 +1,8 @@
 import { UNKNOWN_ERROR_OCCURRED } from "@/common/constants";
 import { ResponseService } from "@/common/services/response";
 import campaign from "@/models/campaign";
+import fs from "fs"
+import { v4 as uuidv4 } from 'uuid';
 import {
   T_Add_Campaign,
   T_Payments,
@@ -11,6 +13,7 @@ import {
   Z_Update_Campaign,
 } from "@repo/contract";
 import { Request, Response } from "express";
+import path from "path";
 
 const response = new ResponseService();
 export const getAllCampaigns = async (req: Request, res: Response) => {
@@ -245,12 +248,45 @@ export const getCampaignLeadById = async (req: Request, res: Response) => {
   }
 };
 
-export const updatePaymentImage = async(req:Request, res:Response)=>{
+export const updatePaymentImage = async (req: Request, res: Response) => {
+  const files = req?.files?.image;
+  const campaignId = req.params.campaignId;
+  const uniqueId = req.params.uniqueId;
+  try {
+    const getCampaign = await campaign.findOne({
+      _id: campaignId,
+      deletedAt: null,
+    });
+    if (!getCampaign) {
+      return res.json(response.error({ message: "Campaign not found" }));
+    }
 
-}
+    const leadUnique = getCampaign.leadUniqueKey;
+
+    const destinationPath = '../../../uploads'
+    //@ts-ignore
+    const newFileName = `${uuidv4()}-${files.name}`;
+    const absolutePath = path.resolve(__dirname, destinationPath, newFileName);
+    //@ts-ignore
+    await files?.mv(absolutePath);
+    //@ts-ignore
+    getCampaign.leads.find(
+      (item) => item.values[leadUnique as string] === uniqueId
+      //@ts-ignore
+    ).payments[0].fileName = `${newFileName}`;
+    await getCampaign.save()
+    //@ts-ignore
+    return res.json(response.success({ message:"file successfully uploaded" }));
+  } catch (err: any) {
+    return res.json(
+      response.error({
+        message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+      })
+    );
+  }
+};
 
 export const updateCampaignLeadById = async (req: Request, res: Response) => {
-  const files = req?.files?.file
   const campaignId = req.params.campaignId;
   const uniqueId = req.params.uniqueId;
   const { values, payments, remarks }: T_Update_Lead = req.body;
@@ -283,12 +319,11 @@ export const updateCampaignLeadById = async (req: Request, res: Response) => {
             values: lead.values,
             payments: lead.payments,
             remarks: lead.remarks,
-            files:files
           },
           message: "Record successfully updated",
         })
       );
-      console.log(req)
+      console.log(req);
     } catch (err: any) {
       return res.json(
         response.error({
@@ -298,6 +333,5 @@ export const updateCampaignLeadById = async (req: Request, res: Response) => {
     }
   } else {
     return res.json(response.error(JSON.parse(isValidInput.error.message)));
-   
   }
 };
