@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { T_Campaign } from "@repo/contract";
 
 import {
   Sheet,
@@ -12,7 +13,6 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
-import { uniqueId } from "./constants"
 
 import {
   Select,
@@ -32,7 +32,7 @@ export default function AddCampaignSheet() {
         <SheetHeader>
           <SheetTitle>Add Campaign</SheetTitle>
           <SheetDescription>
-            Make changes to your profile here. Click save when you're done.
+            Make changes to your campaign here. Click save when you're done.
           </SheetDescription>
         </SheetHeader>
         <div className="grid gap-4 py-4">
@@ -40,32 +40,40 @@ export default function AddCampaignSheet() {
             <Label htmlFor="name" className="text-right">
               Title
             </Label>
-            <Input id="name" value="Pedro Duarte" className="col-span-3" />
+            <Input id="title" required className="col-span-3" />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="username" className="text-right">
-            Description
+              Description
             </Label>
-            <Input id="username" value="@peduarte" className="col-span-3" />
+            <Input id="description" required className="col-span-3" />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-            Unique Id
-            </Label>
-            <Select>
-            <SelectTrigger className="col-span-3">
-              <SelectValue placeholder="Unique Id" />
-            </SelectTrigger>
-            <SelectContent>
-            {uniqueId.map((option) => (
-                  <SelectItem key={option} value={option}>
-                    {option}
-                  </SelectItem>
-                ))}
-            </SelectContent>
-          </Select>
           <Label className="text-right" htmlFor="picture">Excel File</Label>
             <Input id="picture" type="file" className="col-span-3"/>
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="username" className="text-right">
+              Unique Id
+            </Label>
+            <Select required>
+              <SelectTrigger className="col-span-3">
+                <SelectValue placeholder="Select" />
+              </SelectTrigger>
+              <SelectContent>
+                {/* {campaign.patterns.map((option) => (
+                  <SelectItem key={option.name} value={option.name}>
+                    {option.name}
+                  </SelectItem>
+                ))} */}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="username" className="text-right">
+              Master Password
+            </Label>
+            <Input id="description" required className="col-span-3" />
           </div>
         </div>
         <SheetFooter>

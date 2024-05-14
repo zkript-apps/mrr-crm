@@ -1,11 +1,13 @@
+"use client"
 import React from 'react';
 import { Separator } from "@/components/ui/separator";
 import CampaignCard from '@/components/campaign-card';
-import EditCampaignSheet from './edit-campaign-sheet';
 import AddCampaignSheet from './add-campaign-sheet';
 import { MasterPasswordDialog } from '@/components/master-password-dialog';
+import useGetCampaigns from './hooks/useGetCampaigns';
 
 const AdminCampaigns = () => {
+  const { data } = useGetCampaigns();
   const isAdmin = true; 
 
   return (
@@ -23,14 +25,11 @@ const AdminCampaigns = () => {
       </div>
       <Separator className="my-6" />
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
-        <CampaignCard isAdmin={isAdmin} />
-        <CampaignCard isAdmin={isAdmin} />
-        <CampaignCard isAdmin={isAdmin} />
-        <CampaignCard isAdmin={isAdmin} />
-        <CampaignCard isAdmin={isAdmin} />
-        <CampaignCard isAdmin={isAdmin} />
-        <CampaignCard isAdmin={isAdmin} />
-        <CampaignCard isAdmin={isAdmin} />
+        {data?.items?.map((item: any) => {
+          return (
+            <CampaignCard isAdmin={isAdmin} campaign={item} />
+          );
+        })}
       </div>
     </div>
   )

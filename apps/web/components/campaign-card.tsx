@@ -11,6 +11,8 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import EditCampaignSheet from "@/modules/admin/campaigns/edit-campaign-sheet"
+import { T_Campaign } from "@repo/contract";
+
 // EACH CAMPAIGN HAS ITS OWN PATTERN
 const campaignTitle = "Lazada PRT";
 
@@ -27,32 +29,31 @@ const handleLocalStorageSubmit = () => {
 
 const getCampaignLocalStorage = () => {
   const campaignDataString = localStorage.getItem("campaign");
-  if(campaignDataString){
+  if (campaignDataString) {
     const campaignData = JSON.parse(campaignDataString);
     console.log(campaignData)
   }
 };
 
-export default function CampaignCard({ isAdmin }: { isAdmin?: boolean }) {
+export default function CampaignCard({ isAdmin, campaign }: { isAdmin?: boolean, campaign: T_Campaign }) {
   const router = useRouter();
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-xl">{campaignTitle}</CardTitle>
-        <CardDescription>Some description for the campaign.</CardDescription>
+        <CardTitle className="text-xl">{campaign.title}</CardTitle>
+        <CardDescription>{campaign.description}</CardDescription>
       </CardHeader>
       <CardFooter className="flex justify-between">
-        {isAdmin ? 
-        <div className="flex w-full">
-        <EditCampaignSheet/>
-        <Button 
-        className="ml-auto" 
-        variant="outline"
-        onClick={() => router.push("/admin/payment-methods/campaignId")}
-        >Payment Methods</Button>
-        </div>:
-        <Button onClick={handleLocalStorageSubmit}>Select</Button>}
-       
+        {isAdmin ?
+          <div className="flex w-full">
+            <EditCampaignSheet campaign={campaign} />
+            <Button
+              className="ml-auto"
+              variant="outline"
+              onClick={() => router.push(`/admin/payment-methods/${campaign._id}`)}
+            >Payment Methods</Button>
+          </div> :
+          <Button onClick={handleLocalStorageSubmit}>Select</Button>}
       </CardFooter>
     </Card>
   )

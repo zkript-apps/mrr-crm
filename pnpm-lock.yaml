@@ -120,6 +120,9 @@ importers:
       '@radix-ui/react-tooltip':
         specifier: ^1.0.7
         version: 1.0.7(@types/react-dom@18.2.19)(@types/react@18.2.61)(react-dom@18.2.0)(react@18.2.0)
+      '@repo/contract':
+        specifier: '*'
+        version: link:../../packages/contract
       '@tanstack/react-query':
         specifier: ^5.36.0
         version: 5.36.0(react@18.2.0)

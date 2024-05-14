@@ -13,20 +13,17 @@ const Campaigns = () => {
           Select your current campaign to retrieve the right data.
         </p>
         </div>
-        <div className='flex items-center flex-grow justify-end'>
-        <Button size="lg">Add New Campaign</Button>
-        </div>
       </div>
       <Separator className="my-6" />
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-5">
+        {/* <CampaignCard/>
         <CampaignCard/>
         <CampaignCard/>
         <CampaignCard/>
         <CampaignCard/>
         <CampaignCard/>
         <CampaignCard/>
-        <CampaignCard/>
-        <CampaignCard/>
+        <CampaignCard/> */}
       </div>
     </div>
   )
