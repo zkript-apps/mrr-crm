@@ -14,6 +14,7 @@ import {
 } from "@repo/contract";
 import { Request, Response } from "express";
 import path from "path";
+import { MASTER_PASSWORD } from "@/common/constants/ev";
 
 const response = new ResponseService();
 export const getAllCampaigns = async (req: Request, res: Response) => {
@@ -58,8 +59,9 @@ export const getCampaign = async (req: Request, res: Response) => {
 };
 
 export const addCampain = async (req: Request, res: Response) => {
-  const { title, description, leadUniqueKey, patterns, leads }: T_Add_Campaign =
+  const { title, description, leadUniqueKey, patterns, leads, masterPassword }: T_Add_Campaign =
     req.body;
+  if(masterPassword === MASTER_PASSWORD) {
   const isValidInput = Z_Add_Campaign.safeParse(req.body);
   if (isValidInput.success) {
     try {
@@ -73,7 +75,6 @@ export const addCampain = async (req: Request, res: Response) => {
         updatedAt: null,
         deletedAt: null,
       });
-
       const createCampaign = await newCampaign.save();
       res.json(
         response.success({
@@ -82,6 +83,7 @@ export const addCampain = async (req: Request, res: Response) => {
         })
       );
     } catch (err: any) {
+      console.log(err)
       return res.json(
         response.error({
           message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
@@ -89,15 +91,20 @@ export const addCampain = async (req: Request, res: Response) => {
       );
     }
   } else {
-    return res.json(
+    console.log(JSON.parse(isValidInput.error.message))
+    return res.json( 
       response.error({ message: JSON.parse(isValidInput.error.message) })
     );
   }
+} else {
+  return res.json(
+    response.error({ message: "Unauthorized" })
+  );
+}
 };
 
 export const updateCampaign = async (req: Request, res: Response) => {
   const campaignId = req.params.campaignId;
-  const { title, description }: T_Update_Campaign = req.body;
   const isValidInput = Z_Update_Campaign.safeParse(req.body);
   if (isValidInput.success) {
     try {
@@ -138,6 +145,56 @@ export const updateCampaign = async (req: Request, res: Response) => {
       response.error({ message: JSON.parse(isValidInput.error.message) })
     );
   }
+};
+
+export const updateCampaignValidate = async (req: Request, res: Response) => {
+  const { title, description, leadUniqueKey, masterPassword }: T_Update_Campaign =
+  req.body;
+  const campaignId = req.params.campaignId;
+  const isValidInput = Z_Update_Campaign.safeParse(req.body);
+  if(masterPassword === MASTER_PASSWORD) {
+  if (isValidInput.success) {
+    try {
+      const getCampaign = campaign.findOne({
+        _id: campaignId,
+        deletedAt: null,
+      });
+      if (!getCampaign) {
+        return res.json(
+          response.error({ message: "This campain not exists on our system" })
+        );
+      }
+      const editCampaign = await campaign.findByIdAndUpdate(
+        campaignId,
+        {
+          $set: req.body,
+          updatedAt: Date.now(),
+        },
+        {
+          new: true,
+        }
+      );
+      res.json(
+        response.success({
+          item: editCampaign,
+          message: "Campaign successfully updated",
+        })
+      );
+    } catch (err: any) {
+      console.log(err)
+      return res.json(
+        response.error({
+          message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+        })
+      );
+    }
+  } else {
+    console.log( JSON.parse(isValidInput.error.message))
+    return res.json(
+      response.error({ message: JSON.parse(isValidInput.error.message) })
+    );
+  }
+}
 };
 
 export const deleteCampaign = async (req: Request, res: Response) => {

@@ -7,7 +7,6 @@ enum EContentType {
 
 export class ApiService {
   private isAuthRequired: boolean = true;
-
   private constructHeader(isFormData = false, removeContentType = false) {
     const accessToken = Cookies.get("accessToken");
 

@@ -4,6 +4,7 @@ import paymentMethods from "@/models/paymentMethods";
 import { T_Add_PaymentMethod, T_Update_PaymentMethod, Z_Add_PaymentMethod, Z_Update_PaymentMethod } from "@repo/contract";
 import { Request, Response } from "express";
 import campaign from "@/models/campaign"
+import { MASTER_PASSWORD } from "@/common/constants/ev";
 const response = new ResponseService();
 export const getAllPaymentMethods = async (req: Request, res: Response) => {
   try {
@@ -63,16 +64,18 @@ export const getPaymentMethodByCampaign = async (req: Request,res: Response) => 
 };
 
 export const addPaymentMethod = async (req: Request, res: Response) => {
-    const {campaignId, steps}:T_Add_PaymentMethod = req.body
+    const {campaignId, title, steps, masterPassword}:T_Add_PaymentMethod = req.body
+    if(masterPassword === MASTER_PASSWORD){
     const isValidInput = Z_Add_PaymentMethod.safeParse(req.body)
     if(isValidInput.success){
     try {
       const getCampaign = await campaign.findOne({_id: campaignId, deletedAt:null})
       if(!getCampaign){
-        return res.json(response.error({message:"This campaign is not exist on campaigns record"}))
+        return res.json(response.error({message:"This campaign is not exist on campaigns record"})) 
       }
       const newPaymentMethodSteps = new paymentMethods({
         campaign:campaignId,
+        title: title,
         steps:steps,
         createdAt:Date.now()
       })
@@ -81,9 +84,11 @@ export const addPaymentMethod = async (req: Request, res: Response) => {
     } catch (err:any) {
       return res.json(response.error({message: err.message? err.message : UNKNOWN_ERROR_OCCURRED}))
     }
-  }else{
+  }
+  else{
     return res.json(response.error({message:JSON.parse(isValidInput.error.message)}))
   }
+ }
 };
 
 export const updatePaymentMethodByCampaign = async (
