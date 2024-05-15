@@ -33,8 +33,7 @@ function Remarks({ campaignLead, isLoading, leadId }: { campaignLead: T_Campaign
     mutate(formattedData, {
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: ['campaign', 'title-description'],
-          refetchType: 'active',
+          queryKey: ['campaign-lead'],
         });
         reset()
         toast.success("Remarks saved")
