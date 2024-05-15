@@ -5,6 +5,7 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "lint": "turbo lint",
+    "start": "turbo start",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "dbp:web": "docker image rm jpmadrigal/mrrcrm-web-dev:latest ; docker compose -f ./docker/web/compose-build.yml --env-file .env.development build --no-cache && docker push jpmadrigal/mrrcrm-web-dev:latest",
     "dbp:api": "docker image rm jpmadrigal/mrrcrm-api-dev:latest ; docker build --no-cache -f ./docker/api/Dockerfile -t jpmadrigal/mrrcrm-api-dev . && docker push jpmadrigal/mrrcrm-api-dev:latest",
