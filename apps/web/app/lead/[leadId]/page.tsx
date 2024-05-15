@@ -1,10 +1,8 @@
-import Lead from '@/modules/lead'
-import React from 'react'
+import Lead from "@/modules/lead";
+import React from "react";
 
 const LeadPage = () => {
-  return (
-    <Lead/>
-  )
-}
+  return <Lead />;
+};
 
-export default LeadPage
+export default LeadPage;

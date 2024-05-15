@@ -9,7 +9,10 @@ export class ApiService {
   private BASE_URL: string | undefined;
   private isAuthRequired: boolean = false;
 
-  constructor(hasAuthentication = true, source: "mrr-crm" | "mock" = "mrr-crm") {
+  constructor(
+    hasAuthentication = true,
+    source: "mrr-crm" | "mock" = "mrr-crm",
+  ) {
     this.BASE_URL =
       source == "mrr-crm" ? process.env.API_URL : process.env.API_URL;
     this.isAuthRequired = hasAuthentication;
@@ -32,7 +35,7 @@ export class ApiService {
   async get<T = any>(
     endpoint: string,
     params?: Record<string, any>,
-    signal?: AbortSignal
+    signal?: AbortSignal,
   ): Promise<T | any> {
     const reqParams = new URLSearchParams(params).toString();
     //const header = this.constructHeader();
@@ -42,7 +45,7 @@ export class ApiService {
       {
         //headers: header,
         ...(signal ? { signal } : {}),
-      }
+      },
     );
 
     return (await res).json();

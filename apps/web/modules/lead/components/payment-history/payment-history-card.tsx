@@ -1,17 +1,16 @@
-import * as React from "react"
+import * as React from "react";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -19,16 +18,23 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-import { T_Payment } from "../basic-information/hooks/useUpdateCampaignLeadById"
-import { format } from 'date-fns';
+} from "@/components/ui/alert-dialog";
+import { T_Payment } from "../basic-information/hooks/useUpdateCampaignLeadById";
+import { format } from "date-fns";
+import Link from "next/link";
 
-export default function PaymentHistoryCard({ payment }: { payment: T_Payment }) {
+export default function PaymentHistoryCard({
+  payment,
+}: {
+  payment: T_Payment;
+}) {
   return (
     <Card>
       <CardHeader>
         <CardTitle className="text-xl">{payment.method}</CardTitle>
-        <CardDescription>{format(new Date(payment.date), "MMMM d, yyyy h:mm a")}</CardDescription>
+        <CardDescription>
+          {format(new Date(payment.date), "MMMM d, yyyy h:mm a")}
+        </CardDescription>
       </CardHeader>
       <CardFooter className="flex justify-between">
         <AlertDialog>
@@ -39,7 +45,6 @@ export default function PaymentHistoryCard({ payment }: { payment: T_Payment }) 
             <AlertDialogHeader>
               <div className="w-full flex justify-between items-center">
                 <AlertDialogTitle>{payment.method}</AlertDialogTitle>
-                <AlertDialogTitle className="text-xs text-gray-500">{payment._id}</AlertDialogTitle>
               </div>
               <AlertDialogDescription>
                 {format(new Date(payment.date), "MMMM d, yyyy h:mm a")}
@@ -48,28 +53,34 @@ export default function PaymentHistoryCard({ payment }: { payment: T_Payment }) 
             <div className="w-full">
               <div className="flex">
                 <div className="flex flex-col w-1/2">
-                  <label className="text-sm text-gray-500">
-                    Repay Amount
-                  </label>
-                  <div className="text-lg">
-                    ₱{payment.repayAmount}
-                  </div>
+                  <label className="text-sm text-gray-500">Repay Amount</label>
+                  <div className="text-lg">₱{payment.repayAmount}</div>
                 </div>
                 <div className="flex flex-col w-1/2">
-                  <div className="text-sm text-gray-500">
-                    Receipt Amount
-                  </div>
-                  <div className="text-lg">
-                    ₱{payment.receiptAmount}
-                  </div>
+                  <div className="text-sm text-gray-500">Receipt Amount</div>
+                  <div className="text-lg">₱{payment.receiptAmount}</div>
                 </div>
               </div>
-              <div className="mt-4 flex flex-col">
-                <div className="text-sm text-gray-500">
-                  Remarks
+              <div className="flex">
+                <div className="mt-4 flex flex-col w-1/2">
+                  <div className="text-sm text-gray-500">Remarks</div>
+                  <div className="text-lg">{payment.remarks}</div>
                 </div>
-                <div className="text-lg">
-                  {payment.remarks}
+                <div className="mt-4 flex flex-col w-1/2">
+                  <div className="text-sm text-gray-500">Image</div>
+                  <div className="text-lg">
+                    {payment.fileName ? (
+                      <Link
+                        href={`${process.env.WEB_URL}/files/${payment.fileName}`}
+                        target="_blank"
+                        className="text-blue-500 hover:underline"
+                      >
+                        View file
+                      </Link>
+                    ) : (
+                      <p className="text-gray-400">No image</p>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -80,5 +91,5 @@ export default function PaymentHistoryCard({ payment }: { payment: T_Payment }) 
         </AlertDialog>
       </CardFooter>
     </Card>
-  )
+  );
 }

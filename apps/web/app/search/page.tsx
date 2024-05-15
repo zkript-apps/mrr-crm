@@ -1,10 +1,8 @@
-import Search from '@/modules/search'
-import React from 'react'
+import Search from "@/modules/search";
+import React from "react";
 
 const SearchPage = () => {
-  return (
-    <Search/>
-  )
-}
+  return <Search />;
+};
 
-export default SearchPage
+export default SearchPage;

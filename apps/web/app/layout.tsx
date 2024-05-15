@@ -21,9 +21,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <QueryWrapper>
-          <CampaignCheckerWrapper>
-            {children}
-          </CampaignCheckerWrapper>
+          <CampaignCheckerWrapper>{children}</CampaignCheckerWrapper>
         </QueryWrapper>
         <Toaster richColors position="top-right" />
       </body>
