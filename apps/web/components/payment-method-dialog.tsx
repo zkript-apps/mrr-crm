@@ -6,12 +6,16 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-import { Button } from "@/components/ui/button"
-import { T_PaymentMethod } from "@/modules/admin/payment-methods/hooks/useAddPaymentMethod"
-import { AlertDialogDescription } from "@radix-ui/react-alert-dialog"
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { T_PaymentMethod } from "@/modules/admin/payment-methods/hooks/useAddPaymentMethod";
+import { AlertDialogDescription } from "@radix-ui/react-alert-dialog";
 
-export function PaymentMethodDialog({ paymentMethod }: { paymentMethod: T_PaymentMethod }) {
+export function PaymentMethodDialog({
+  paymentMethod,
+}: {
+  paymentMethod: T_PaymentMethod;
+}) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
@@ -22,19 +26,19 @@ export function PaymentMethodDialog({ paymentMethod }: { paymentMethod: T_Paymen
           <AlertDialogTitle>{paymentMethod.title}</AlertDialogTitle>
           <AlertDialogDescription>
             <div className="mt-5">
-            {paymentMethod.steps.map((step) => (
-            <div key={step._id}>
-              <div className="font-bold mt-2">Step {step.step}</div>
-              <div>{step.instruction}</div>
+              {paymentMethod.steps.map((step) => (
+                <div key={step._id}>
+                  <div className="font-bold mt-2">Step {step.step}</div>
+                  <div>{step.instruction}</div>
+                </div>
+              ))}
             </div>
-          ))}
-          </div>
-            </AlertDialogDescription>
+          </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Close</AlertDialogCancel>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
-  )
+  );
 }

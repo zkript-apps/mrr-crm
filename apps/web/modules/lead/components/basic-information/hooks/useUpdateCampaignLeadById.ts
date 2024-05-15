@@ -1,6 +1,6 @@
 import { ApiService } from "@/lib/api";
 import { API_CAMPAIGNS } from "@/lib/api-routes";
-import { useMutation } from "@tanstack/react-query"
+import { useMutation } from "@tanstack/react-query";
 
 export interface T_Payment {
   method: string;
@@ -24,17 +24,24 @@ export interface T_Campaign_Lead {
   remarks: Remark[];
 }
 
-export async function updateCampaignLeadById(campaignId: string, uniqueId: string, data: T_Campaign_Lead) {
+export async function updateCampaignLeadById(
+  campaignId: string,
+  uniqueId: string,
+  data: T_Campaign_Lead,
+) {
   const apiService = new ApiService();
-  return await apiService.patch(`${API_CAMPAIGNS}/${campaignId}/lead/${uniqueId}`, data)
+  return await apiService.patch(
+    `${API_CAMPAIGNS}/${campaignId}/lead/${uniqueId}`,
+    data,
+  );
 }
 
 function useUpdateCampaignLeadById(campaignId: string, uniqueId: string) {
   const mutate = useMutation({
-    mutationFn: (data: T_Campaign_Lead) => 
-      updateCampaignLeadById(campaignId, uniqueId, data)
-  })
-  return mutate
+    mutationFn: (data: T_Campaign_Lead) =>
+      updateCampaignLeadById(campaignId, uniqueId, data),
+  });
+  return mutate;
 }
 
-export default useUpdateCampaignLeadById
+export default useUpdateCampaignLeadById;

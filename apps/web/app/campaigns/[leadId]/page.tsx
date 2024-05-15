@@ -1,10 +1,8 @@
-import Campaigns from '@/modules/campaigns'
-import React from 'react'
+import Campaigns from "@/modules/campaigns";
+import React from "react";
 
 const CampaignsPage = () => {
-  return (
-    <Campaigns/>
-  )
-}
+  return <Campaigns />;
+};
 
-export default CampaignsPage
+export default CampaignsPage;

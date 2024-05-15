@@ -1,6 +1,6 @@
-import React from 'react'
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import React from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 const Search = () => {
   return (
@@ -10,7 +10,7 @@ const Search = () => {
         <Button type="submit">Search</Button>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default Search
+export default Search;
