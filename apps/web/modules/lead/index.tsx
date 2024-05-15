@@ -6,9 +6,11 @@ import PaymentMethods from './components/payment-methods'
 import useGetCampaignTitleAndDescription from './components/basic-information/hooks/useGetCampaignTitleAndDescription'
 import { Skeleton } from '@/components/skeleton'
 import PaymentHistory from './components/payment-history'
+import useCampaignDataStore from '@/common/store/useCampaignDataStore'
 
 const Lead = () => {
-  const { data: titleAndDescription, isLoading: isTitleAndDescriptionLoading } = useGetCampaignTitleAndDescription()
+  const campaignId = useCampaignDataStore((state) => state.campaignData?.campaignId)
+  const { data: titleAndDescription, isLoading: isTitleAndDescriptionLoading } = useGetCampaignTitleAndDescription(campaignId as string)
   return (
     <div className='flex flex-col gap-8 p-12'>
       <div className='flex flex-col gap-12'>

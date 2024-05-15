@@ -3,17 +3,16 @@ import React from 'react';
 import { Separator } from "@/components/ui/separator";
 import AddPaymentMethodSheet from './add-method-sheet';
 import { Button } from '@/components/ui/button';
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import useGetCampaignTitleAndDescription from '@/modules/lead/components/basic-information/hooks/useGetCampaignTitleAndDescription';
 import useGetPaymentMethodsByCampaign from './hooks/useGetPaymentMethodsByCampaign';
 import PaymentMethodCard from '@/components/payment-method-card';
-import useCampaignDataStore from '@/common/store/useCampaignDataStore';
 
 const AdminPaymentMethods = () => {
   const router = useRouter();
-  const { data: titleAndDescription, isLoading: isTitleAndDescriptionLoading } = useGetCampaignTitleAndDescription()
-  const campaignId = useCampaignDataStore((state) => state.campaignData?.campaignId);
-  const { data } = useGetPaymentMethodsByCampaign(campaignId as string);
+  const params = useParams();
+  const { data: titleAndDescription, isLoading: isTitleAndDescriptionLoading } = useGetCampaignTitleAndDescription(params.campaignId as string)
+  const { data } = useGetPaymentMethodsByCampaign(params.campaignId as string);
 
   return (
     <div className="space-y-6 p-10 pb-16">

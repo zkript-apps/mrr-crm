@@ -1,25 +1,15 @@
-import Cookies from "js-cookie";
-
-enum EContentType {
-  JSON = "application/json",
-  formData = "multipart/form-data",
-}
-
 export class ApiService {
-  private isAuthRequired: boolean = true;
-  private constructHeader(isFormData = false, removeContentType = false) {
-    const accessToken = Cookies.get("accessToken");
 
-    const res = {
+  private constructHeader(removeContentType = false) {
+    const headers = {
       ...(!removeContentType && {
-        "Content-Type": isFormData ? EContentType.formData : "application/json",
+        "Content-Type": "application/json",
       }),
-      ...(accessToken && this.isAuthRequired
-        ? { Authorization: `Bearer ${accessToken}` }
-        : {}),
-    } as Record<string, any>;
-
-    return res;
+    } as Record<string, any>
+    const options = {
+      headers,
+    }
+    return options
   }
 
   async get<T = any>(
@@ -28,12 +18,12 @@ export class ApiService {
     signal?: AbortSignal
   ): Promise<T | any> {
     const reqParams = new URLSearchParams(params).toString();
-    const header = this.constructHeader();
+    const headers = this.constructHeader();
 
     const res = fetch(
       `${endpoint}${params ? `?${reqParams}` : ""}`,
       {
-        headers: header,
+        ...headers,
         ...(signal ? { signal } : {}),
       }
     );
@@ -42,42 +32,41 @@ export class ApiService {
   }
 
   async post<T = any>(
-    endpoint: string, 
+    endpoint: string,
     body: any,
     raw?: boolean,
     removeContentType?: boolean
   ): Promise<T> {
-    const otherOptions = this.constructHeader(removeContentType);
-    const res = fetch(`${endpoint}`, {
+    const otherOptions = this.constructHeader(removeContentType)
+    const res = fetch(endpoint, {
       method: "POST",
       body: !raw ? JSON.stringify(body) : body,
-      ...otherOptions
-    });
-    return (await res).json();
+      ...otherOptions,
+    })
+    return (await res).json()
   }
-
   //TODO: fix if body is not FormData use application/json as contentType, right now it is using text/plain;charset=UTF-8
-  async patch(
-    endpoint: string, 
-    body: any,
-    isFormData?: boolean,
+  async patch<T = any>(
+    endpoint: string,
+    body?: any,
+    raw?: boolean,
     removeContentType?: boolean
-  ) {
-    const otherOptions = this.constructHeader(isFormData, removeContentType);
-    const res = await fetch(endpoint, {
+  ): Promise<T> {
+    const otherOptions = this.constructHeader(removeContentType)
+    const res = fetch(endpoint, {
       method: "PATCH",
-      body: !isFormData ? JSON.stringify(body) : body,
-      ...otherOptions
-    });
-    return res.json();
+      body: !raw ? JSON.stringify(body) : body,
+      ...otherOptions,
+    })
+    return (await res).json()
   }
 
   async delete(endpoint: string, payload?: { [key: string]: string }) {
-    const header = this.constructHeader();
+    const headers = this.constructHeader();
 
     const res = fetch(`${endpoint}`, {
       method: "DELETE",
-      headers: header,
+      ...headers,
     });
     return (await res).json();
   }
