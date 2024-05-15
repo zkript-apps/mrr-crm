@@ -89,7 +89,6 @@ export const addCampain = async (req: Request, res: Response) => {
           }),
         );
       } catch (err: any) {
-        console.log(err);
         return res.json(
           response.error({
             message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
@@ -97,7 +96,6 @@ export const addCampain = async (req: Request, res: Response) => {
         );
       }
     } else {
-      console.log(JSON.parse(isValidInput.error.message));
       return res.json(
         response.error({ message: JSON.parse(isValidInput.error.message) }),
       );
@@ -191,7 +189,6 @@ export const updateCampaignValidate = async (req: Request, res: Response) => {
           }),
         );
       } catch (err: any) {
-        console.log(err);
         return res.json(
           response.error({
             message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
@@ -199,7 +196,6 @@ export const updateCampaignValidate = async (req: Request, res: Response) => {
         );
       }
     } else {
-      console.log(JSON.parse(isValidInput.error.message));
       return res.json(
         response.error({ message: JSON.parse(isValidInput.error.message) }),
       );
@@ -382,7 +378,6 @@ export const updateCampaignLeadById = async (req: Request, res: Response) => {
           message: "Record successfully updated",
         }),
       );
-      console.log(req);
     } catch (err: any) {
       return res.json(
         response.error({

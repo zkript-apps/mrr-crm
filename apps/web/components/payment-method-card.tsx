@@ -27,7 +27,6 @@ const getCampaignLocalStorage = () => {
   const campaignDataString = localStorage.getItem("campaign");
   if (campaignDataString) {
     const campaignData = JSON.parse(campaignDataString);
-    console.log(campaignData);
   }
 };
 
