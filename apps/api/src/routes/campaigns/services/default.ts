@@ -195,6 +195,9 @@ export const updateCampaignValidate = async (req: Request, res: Response) => {
     );
   }
 }
+else{
+  return res.json(response.error({message: "Unauthorized"}))
+ }
 };
 
 export const deleteCampaign = async (req: Request, res: Response) => {

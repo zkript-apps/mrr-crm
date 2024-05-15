@@ -37,7 +37,7 @@ export default function EditCampaignSheet({ campaign }: { campaign: T_Campaign }
     reset
   } = useForm<any>()
 
-  const [leadUniqueKey, setLeadUniqueKey] = useState<string | null>(null);
+  const [leadUniqueKey, setLeadUniqueKey] = useState<string | null>(campaign.leadUniqueKey);
   
   const onSubmit: SubmitHandler<any> = (data: any) => {
   const { title, description, masterPassword } = data;
@@ -48,22 +48,25 @@ export default function EditCampaignSheet({ campaign }: { campaign: T_Campaign }
     masterPassword
   };
     const callBackReq = {
-      onSuccess: () => {      
-          queryClient.invalidateQueries({ 
-            queryKey: ["campaign", "title-description"],
-            refetchType: 'active',
-          });
-          
-          toast.success("Successfully Update Campaign");
-          },
+      onSuccess: (data:any) => {      
+        if(!data.error){
+        queryClient.invalidateQueries({ 
+          queryKey: ["campaigns"],
+          refetchType: 'active',
+        });
+        toast.success("Successfully Update Campaign");
+        }
+        else{
+        toast.error(data.message);
+        }
+      },
         onError() {
         toast.error("An unexpected error has occurred, try again")
       }
     };
     mutate(campaignData, callBackReq)
-    reset()
   }
-  
+  console.log(campaign)
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -120,7 +123,7 @@ export default function EditCampaignSheet({ campaign }: { campaign: T_Campaign }
             </Label>
             <Input 
             {...register("masterPassword")} 
-            id="description" required className="col-span-3" />
+            id="description" type="password" required className="col-span-3" />
           </div>
         </div>
         <SheetFooter>

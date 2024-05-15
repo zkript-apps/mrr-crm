@@ -47,20 +47,24 @@ export default function AddPaymentMethodSheet() {
     };
 
     const callBackReq = {
-      onSuccess: () => {      
+      onSuccess: (data:any) => {      
+          if(!data.error){
           queryClient.invalidateQueries({ 
             queryKey: ["payment-methods"],
             refetchType: 'active',
           });
-          reset()
           toast.success("Successfully Add Payment Method");
-          },
+          }
+          else{
+          toast.error(data.message);
+          }
+        },
         onError() {
         toast.error("An unexpected error has occurred, try again")
       }
     };
-
     mutate(paymentMethodData, callBackReq);
+    reset()
   }
   };
 
@@ -132,8 +136,8 @@ export default function AddPaymentMethodSheet() {
               Master Password
             </Label>
             <Input 
-            {...register("masterPassword")} 
-             id="masterPassword" className="col-span-3" />
+            {...register("masterPassword")}
+             id="masterPassword" type="password" className="col-span-3" />
           </div>
           <div className="items-center gap-4 ml-auto">
           </div>       

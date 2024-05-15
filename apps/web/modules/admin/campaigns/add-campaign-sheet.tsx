@@ -74,19 +74,24 @@ export default function AddCampaignSheet() {
     };
     
     const callBackReq = {
-      onSuccess: () => {      
+      onSuccess: (data:any) => {      
+        if(!data.error){
           queryClient.invalidateQueries({ 
-            queryKey: ["campaign", "title-description"],
+            queryKey: ["campaigns"],
             refetchType: 'active',
           });
-          reset()
-          toast.success("Successfully Add Campaign");
-          },
+        toast.success("Successfully Add Campaign");
+        }
+        else{
+        toast.error(data.message);
+        }
+      },
       onError() {
         toast.error("An unexpected error has occurred, try again")
       }
     };
     mutate(campaignData, callBackReq)
+    reset()
   };
   
 

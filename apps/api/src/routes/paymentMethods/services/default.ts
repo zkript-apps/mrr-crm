@@ -84,6 +84,9 @@ export const addPaymentMethod = async (req: Request, res: Response) => {
     return res.json(response.error({message:JSON.parse(isValidInput.error.message)}))
   }
  }
+ else{
+  return res.json(response.error({message: "Unauthorized"}))
+ }
 };
 
 export const updatePaymentMethodByCampaign = async (
