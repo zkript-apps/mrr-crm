@@ -98,6 +98,15 @@ export default function AddPaymentMethodSheet() {
                 />       
               </div>
             ))}
+            <div className="flex justify-end">
+                      <Button
+                variant="ghost"
+                className="rounded-lg w-32"
+                onClick={addStep}
+              >
+                Add Step
+              </Button>
+              </div>
              <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="masterPassword" className="text-right">
               Master Password
@@ -107,13 +116,6 @@ export default function AddPaymentMethodSheet() {
              id="masterPassword" className="col-span-3" />
           </div>
           <div className="items-center gap-4 ml-auto">
-          <Button
-                variant="ghost"
-                className="rounded-lg"
-                onClick={addStep}
-              >
-                Add Step
-              </Button>
           </div>       
         </div>
         <SheetFooter>         

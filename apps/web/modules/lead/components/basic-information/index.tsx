@@ -3,11 +3,13 @@ import BasicInformationFields from './basic-information-fields'
 import Remarks from './remarks'
 import useGetCampaignLeadById from './hooks/useGetCampaignLeadById'
 import { useParams } from 'next/navigation'
+import useCampaignDataStore from '@/common/store/useCampaignDataStore'
 
 function BasicInformation() {
   const params = useParams()
   const leadId = params.leadId as string
-  const { data: campaignLead, isLoading: isCampaignLeadLoading } = useGetCampaignLeadById("663ee9c094a8bb883db97936", leadId)
+  const campaignId = useCampaignDataStore((state) => state.campaignData?.campaignId);
+  const { data: campaignLead, isLoading: isCampaignLeadLoading } = useGetCampaignLeadById(campaignId as string, leadId)
   return (
     <div className='flex gap-44'>
       <div className='w-1/2'>

@@ -26,7 +26,7 @@ export interface T_Campaign_Lead {
 
 export async function updateCampaignLeadById(campaignId: string, uniqueId: string, data: T_Campaign_Lead) {
   const apiService = new ApiService();
-  return await apiService.patch(`${API_CAMPAIGNS}/${campaignId}/lead/${uniqueId}`, data, true, true)
+  return await apiService.patch(`${API_CAMPAIGNS}/${campaignId}/lead/${uniqueId}`, data)
 }
 
 function useUpdateCampaignLeadById(campaignId: string, uniqueId: string) {

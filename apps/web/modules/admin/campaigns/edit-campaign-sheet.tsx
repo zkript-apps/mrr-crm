@@ -43,12 +43,9 @@ export default function EditCampaignSheet({ campaign }: { campaign: T_Campaign }
     leadUniqueKey: leadUniqueKey,
     masterPassword
   };
-    console.log(campaignData)
     mutate(campaignData)
   }
   
-  
-
   return (
     <Sheet>
       <SheetTrigger asChild>

@@ -47,17 +47,12 @@ export const getAllPaymentMethods = async (req: Request, res: Response) => {
 export const getPaymentMethodByCampaign = async (req: Request,res: Response) => {
   const campaignId = req.params.campaignId;
   try {
-    const getPaymnetMethodSteps:any = await paymentMethods.findOne({campaign:campaignId, deletedAt:null}).populate("campaign")
+    const getPaymnetMethodSteps:any = await paymentMethods.find({campaign:campaignId, deletedAt:null}).populate("campaign")
     if(!getPaymnetMethodSteps){
-        return res.json(response.error({message:"This campaign do not have any payment method instructions"}))
+      res.json(response.success({items: [], message: "No payments method found"}))
+    } else {
+      res.json(response.success({items:getPaymnetMethodSteps}))
     }
-    const newPaymentMethod = {
-      _id:getPaymnetMethodSteps._id,
-      title:getPaymnetMethodSteps.campaign.title,
-      description:getPaymnetMethodSteps.description,
-      steps:getPaymnetMethodSteps.steps
-    }
-    res.json(response.success({item:newPaymentMethod}))
   } catch (err:any) {
     return res.json(response.error({message:err.message ? err.message : UNKNOWN_ERROR_OCCURRED}))
   }

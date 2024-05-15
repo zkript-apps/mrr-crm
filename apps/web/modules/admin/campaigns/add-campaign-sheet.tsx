@@ -49,9 +49,7 @@ export default function AddCampaignSheet() {
     };
 
     reader.readAsBinaryString(file);
-  };
-
-
+  }
 
   const onSubmit: SubmitHandler<any> = (data: any) => {
     const { title, description, masterPassword } = data;
@@ -136,7 +134,7 @@ export default function AddCampaignSheet() {
             </Label>
             <Input
             {...register("masterPassword")}
-             id="description" required className="col-span-3" />
+             id="description" type="password" required className="col-span-3" />
           </div>
         </div>
         <SheetFooter>

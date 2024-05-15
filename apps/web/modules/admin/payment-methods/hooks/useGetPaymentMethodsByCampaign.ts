@@ -9,9 +9,10 @@ export async function getPaymentMethodsByCampaign(campaignId: string) {
 
 function useGetPaymentMethodsByCampaign(campaignId: string) {
   const query = useQuery({
-    queryKey: ["payment-methods"],
+    queryKey: ["payment-methods", campaignId],
     queryFn: () => getPaymentMethodsByCampaign(campaignId),
     refetchOnWindowFocus: false,
+    enabled: !!campaignId
   })
   return query
 }

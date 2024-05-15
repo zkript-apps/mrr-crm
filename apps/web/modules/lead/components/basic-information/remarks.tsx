@@ -8,6 +8,7 @@ import { useForm } from 'react-hook-form'
 import useUpdateCampaignLeadById, { T_Campaign_Lead } from './hooks/useUpdateCampaignLeadById'
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner"
+import useCampaignDataStore from '@/common/store/useCampaignDataStore'
 
 interface T_Remark {
   comment: string
@@ -16,7 +17,8 @@ interface T_Remark {
 function Remarks({ campaignLead, isLoading, leadId }: { campaignLead: T_Campaign_Lead, isLoading: boolean, leadId: string }) {
   const queryClient = useQueryClient();
   const { register, handleSubmit, reset } = useForm<T_Remark>()
-  const { mutate, isPending: isUpdateCampaignLeadLoading } = useUpdateCampaignLeadById("663ee9c094a8bb883db97936", leadId)
+  const campaignId = useCampaignDataStore((state) => state.campaignData?.campaignId)
+  const { mutate, isPending: isUpdateCampaignLeadLoading } = useUpdateCampaignLeadById(campaignId as string, leadId)
   const onSubmit = (data: any) => {
     const formattedData ={
       ...campaignLead,

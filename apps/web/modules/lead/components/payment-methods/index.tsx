@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { SideNav } from './side-nav'
-import useGetPaymentMethods from '../payment-history/hooks/useGetPaymentMethods';
 import { Skeleton } from '@/components/skeleton';
+import useGetPaymentMethodsByCampaign from '@/modules/admin/payment-methods/hooks/useGetPaymentMethodsByCampaign';
+import useCampaignDataStore from '@/common/store/useCampaignDataStore';
 
 
 interface PaymentMethodStep {
@@ -16,7 +17,8 @@ export interface PaymentMethod {
 }
 
 function PaymentMethods() {
-  const { data: paymentMethods, isLoading: isGetPaymentMethodsLoading } = useGetPaymentMethods()
+  const campaignId = useCampaignDataStore((state) => state.campaignData?.campaignId);
+  const { data: paymentMethods, isLoading: isGetPaymentMethodsLoading } = useGetPaymentMethodsByCampaign(campaignId as string)
   const [selectedItem, setSelectedItem] = useState(paymentMethods?.items[0]?._id || '');
 
   const getSteps = (id: string) => {

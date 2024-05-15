@@ -8,7 +8,7 @@ import { Skeleton } from '@/components/skeleton'
 import PaymentHistory from './components/payment-history'
 
 const Lead = () => {
-  const { data: titleAndDescription, isLoading: isTitleAndDescriptionLoading } = useGetCampaignTitleAndDescription("663ee9c094a8bb883db97936")
+  const { data: titleAndDescription, isLoading: isTitleAndDescriptionLoading } = useGetCampaignTitleAndDescription()
   return (
     <div className='flex flex-col gap-8 p-12'>
       <div className='flex flex-col gap-12'>

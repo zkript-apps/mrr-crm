@@ -1,7 +1,6 @@
 "use client"
-
 import * as React from "react"
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -12,31 +11,37 @@ import {
 } from "@/components/ui/card"
 import EditCampaignSheet from "@/modules/admin/campaigns/edit-campaign-sheet"
 import { T_Campaign } from "@repo/contract";
-
-// EACH CAMPAIGN HAS ITS OWN PATTERN
-const campaignTitle = "Lazada PRT";
-
-const handleLocalStorageSubmit = () => {
-  const currentTime = new Date();
-  const data = {
-    campaignId: "663ee9c094a8bb883db97936",
-    name: campaignTitle,
-    date: currentTime.toString()
-  };
-  localStorage.setItem("campaign", JSON.stringify(data));
-  getCampaignLocalStorage()
-};
-
-const getCampaignLocalStorage = () => {
-  const campaignDataString = localStorage.getItem("campaign");
-  if (campaignDataString) {
-    const campaignData = JSON.parse(campaignDataString);
-    console.log(campaignData)
-  }
-};
+import { toast } from "sonner";
+import useCampaignDataStore from "@/common/store/useCampaignDataStore";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function CampaignCard({ isAdmin, campaign }: { isAdmin?: boolean, campaign: T_Campaign }) {
   const router = useRouter();
+  const params = useParams();
+  const queryClient = useQueryClient()
+  const setCampaignData = useCampaignDataStore((state) => state.update)
+  const handleLocalStorageSubmit = () => {
+    const currentTime = new Date();
+    const data = {
+      campaignId: campaign._id as string,
+      name: campaign.title,
+      date: currentTime.toString()
+    };
+    localStorage.setItem("campaign", JSON.stringify(data));
+    toast.success("Campaign was set");
+    setCampaignData({
+      campaignData: data
+    })
+    queryClient.invalidateQueries({
+      queryKey: ["campaign", "title-description"],
+    })
+    queryClient.invalidateQueries({
+      queryKey: ["campaign-lead"],
+    })
+    if(params && params.leadId) {
+      router.push(`/lead/${params.leadId}`)
+    }
+  };
   return (
     <Card>
       <CardHeader>
