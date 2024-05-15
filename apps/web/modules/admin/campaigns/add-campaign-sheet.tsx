@@ -1,8 +1,9 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import * as XLSX from "xlsx";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import * as XLSX from 'xlsx';
+import { useForm, SubmitHandler } from "react-hook-form"
+import { useQueryClient } from "@tanstack/react-query";
 
 import {
   Sheet,
@@ -24,10 +25,12 @@ import {
 } from "@/components/ui/select";
 import { useState } from "react";
 import useAddCampaign from "./hooks/useAddCampaign";
+import { toast } from "sonner";
 
 export default function AddCampaignSheet() {
+  const queryClient = useQueryClient()
   const { mutate } = useAddCampaign();
-  const { register, handleSubmit } = useForm<any>();
+  const { register, handleSubmit, reset } = useForm<any>();
   const [patterns, setPatterns] = useState<string[] | null>(null);
   const [leadValues, setLeadValues] = useState<any[] | null>(null);
   const [leadUniqueKey, setLeadUniqueKey] = useState<string | null>(null);
@@ -67,7 +70,26 @@ export default function AddCampaignSheet() {
         payments: [],
       })),
     };
-    mutate(campaignData);
+    
+    const callBackReq = {
+      onSuccess: (data:any) => {      
+        if(!data.error){
+          queryClient.invalidateQueries({ 
+            queryKey: ["campaigns"],
+            refetchType: 'active',
+          });
+        toast.success("Successfully Add Campaign");
+        }
+        else{
+        toast.error(data.message);
+        }
+      },
+      onError() {
+        toast.error("An unexpected error has occurred, try again")
+      }
+    };
+    mutate(campaignData, callBackReq)
+    reset()
   };
 
   return (

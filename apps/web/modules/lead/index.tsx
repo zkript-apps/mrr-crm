@@ -7,16 +7,29 @@ import useGetCampaignTitleAndDescription from "./components/basic-information/ho
 import { Skeleton } from "@/components/skeleton";
 import PaymentHistory from "./components/payment-history";
 import useCampaignDataStore from "@/common/store/useCampaignDataStore";
+import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 const Lead = () => {
+  const router = useRouter();
   const campaignId = useCampaignDataStore(
     (state) => state.campaignData?.campaignId,
   );
   const { data: titleAndDescription, isLoading: isTitleAndDescriptionLoading } =
     useGetCampaignTitleAndDescription(campaignId as string);
   return (
-    <div className="flex flex-col gap-8 p-12">
-      <div className="flex flex-col gap-12">
+    <div className="space-y-6 p-10 pb-16">
+      <div className="flex flex-col">
+      <div>
+      <Button
+                onClick={() => router.push("/")}
+                className="mb-4"
+                size="sm"
+              >
+                Back to Home
+          </Button>
+          </div>
         {titleAndDescription?.item ? (
           !isTitleAndDescriptionLoading ? (
             <div>
@@ -43,6 +56,7 @@ const Lead = () => {
             <div className="text-gray-500">No description</div>
           </div>
         )}
+          <Separator className="my-6" />
       </div>
       <div>
         {/* <Tabs tabs={tabs} /> */}

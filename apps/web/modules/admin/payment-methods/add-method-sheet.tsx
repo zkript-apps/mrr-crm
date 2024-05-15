@@ -1,10 +1,11 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useState } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { useState } from 'react';
+import { useForm, SubmitHandler } from "react-hook-form"
+import { useQueryClient } from "@tanstack/react-query";
 
 import {
   Sheet,
@@ -19,12 +20,15 @@ import {
 import useAddPaymentMethod, {
   T_PaymentMethod,
 } from "./hooks/useAddPaymentMethod";
+import { toast } from "sonner";
 
 export default function AddPaymentMethodSheet() {
+  const queryClient = useQueryClient()
   const { mutate } = useAddPaymentMethod();
-  const { register, handleSubmit } = useForm<any>();
+  const { register, handleSubmit, reset } = useForm<any>();
 
   const onSubmit: SubmitHandler<T_PaymentMethod> = (data: T_PaymentMethod) => {
+ 
     const campaignDataString = localStorage.getItem("campaign");
     if (campaignDataString) {
       const campaignData = JSON.parse(campaignDataString);
@@ -37,10 +41,29 @@ export default function AddPaymentMethodSheet() {
         campaignId: campaignData.campaignId,
         masterPassword,
         title,
-        steps,
-      };
-      mutate(paymentMethodData);
-    }
+        steps
+    };
+
+    const callBackReq = {
+      onSuccess: (data:any) => {      
+          if(!data.error){
+          queryClient.invalidateQueries({ 
+            queryKey: ["payment-methods"],
+            refetchType: 'active',
+          });
+          toast.success("Successfully Add Payment Method");
+          }
+          else{
+          toast.error(data.message);
+          }
+        },
+        onError() {
+        toast.error("An unexpected error has occurred, try again")
+      }
+    };
+    mutate(paymentMethodData, callBackReq);
+    reset()
+  }
   };
 
   const [steps, setSteps] = useState([{ step: 1, value: "" }]);
@@ -114,6 +137,7 @@ export default function AddPaymentMethodSheet() {
               <Input
                 {...register("masterPassword")}
                 id="masterPassword"
+                type="password"
                 className="col-span-3"
               />
             </div>

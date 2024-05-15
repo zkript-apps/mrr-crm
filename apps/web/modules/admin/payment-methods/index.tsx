@@ -21,6 +21,7 @@ const AdminPaymentMethods = () => {
         {titleAndDescription?.item ? (
           !isTitleAndDescriptionLoading ? (
             <div>
+            <div className="space-x-2">
               <Button
                 onClick={() => router.push("/admin/campaigns")}
                 className="mb-4"
@@ -29,6 +30,14 @@ const AdminPaymentMethods = () => {
               >
                 Back to Campaigns
               </Button>
+              <Button
+                onClick={() => router.push("/")}
+                className="mb-4"
+                size="sm"
+              >
+                Back to Home
+              </Button>
+              </div>
               <h2 className="text-2xl font-bold tracking-tight">
                 Payment Methods ({" "}
                 {titleAndDescription?.item.title

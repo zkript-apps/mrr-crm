@@ -2,7 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { T_Campaign } from "@repo/contract";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form"
+import { useQueryClient } from "@tanstack/react-query";
 
 import {
   Sheet,
@@ -24,17 +25,19 @@ import {
 } from "@/components/ui/select";
 import { useState } from "react";
 import useUpdateCampaign from "./hooks/useUpdateCampaign";
+import { toast } from "sonner";
 
 export default function EditCampaignSheet({
   campaign,
 }: {
   campaign: T_Campaign;
 }) {
+  const queryClient = useQueryClient()
   const campaignId = campaign._id ?? "";
   const { mutate } = useUpdateCampaign(campaignId);
-  const { register, handleSubmit } = useForm<any>();
+  const { register, handleSubmit, reset } = useForm<any>();
 
-  const [leadUniqueKey, setLeadUniqueKey] = useState<string | null>(null);
+  const [leadUniqueKey, setLeadUniqueKey] = useState<string | null>(campaign.leadUniqueKey);
 
   const onSubmit: SubmitHandler<any> = (data: any) => {
     const { title, description, masterPassword } = data;
@@ -44,9 +47,28 @@ export default function EditCampaignSheet({
       leadUniqueKey: leadUniqueKey,
       masterPassword,
     };
-    mutate(campaignData);
+    const callBackReq = {
+      onSuccess: (data:any) => {      
+        if(!data.error){
+        queryClient.invalidateQueries({ 
+          queryKey: ["campaigns"],
+          refetchType: 'active',
+        });
+        toast.success("Successfully Update Campaign");
+        }
+        else{
+        toast.error(data.message);
+        }
+      },
+        onError() {
+        toast.error("An unexpected error has occurred, try again")
+      }
+    };
+    mutate(campaignData, callBackReq)
+    reset()
   };
-
+   
+  
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -115,6 +137,7 @@ export default function EditCampaignSheet({
               <Input
                 {...register("masterPassword")}
                 id="description"
+                type="password"
                 required
                 className="col-span-3"
               />
