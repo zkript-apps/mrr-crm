@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useState } from 'react';
 import { useForm, SubmitHandler } from "react-hook-form"
+import { useQueryClient } from "@tanstack/react-query";
 
 import {
   Sheet,
@@ -17,15 +18,19 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import useAddPaymentMethod, { T_PaymentMethod } from "./hooks/useAddPaymentMethod";
+import { toast } from "sonner";
 
 export default function AddPaymentMethodSheet() {
+  const queryClient = useQueryClient()
   const { mutate } = useAddPaymentMethod();
   const {
     register,
-    handleSubmit
+    handleSubmit,
+    reset
   } = useForm<any>()
 
   const onSubmit: SubmitHandler<T_PaymentMethod> = (data: T_PaymentMethod) => {
+ 
     const campaignDataString = localStorage.getItem("campaign");
     if(campaignDataString){
     const campaignData = JSON.parse(campaignDataString);
@@ -40,7 +45,22 @@ export default function AddPaymentMethodSheet() {
         title,
         steps
     };
-    mutate(paymentMethodData);
+
+    const callBackReq = {
+      onSuccess: () => {      
+          queryClient.invalidateQueries({ 
+            queryKey: ["payment-methods"],
+            refetchType: 'active',
+          });
+          reset()
+          toast.success("Successfully Add Payment Method");
+          },
+        onError() {
+        toast.error("An unexpected error has occurred, try again")
+      }
+    };
+
+    mutate(paymentMethodData, callBackReq);
   }
   };
 

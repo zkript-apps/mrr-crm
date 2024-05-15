@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import * as XLSX from 'xlsx';
 import { useForm, SubmitHandler } from "react-hook-form"
+import { useQueryClient } from "@tanstack/react-query";
 
 import {
   Sheet,
@@ -24,12 +25,15 @@ import {
 } from "@/components/ui/select"
 import { useState } from "react";
 import useAddCampaign from "./hooks/useAddCampaign";
+import { toast } from "sonner";
 
 export default function AddCampaignSheet() {
+  const queryClient = useQueryClient()
   const { mutate } = useAddCampaign();
   const {
     register,
-    handleSubmit
+    handleSubmit,
+    reset
   } = useForm<any>()
   const [patterns, setPatterns] = useState<string[] | null>(null);
   const [leadValues, setLeadValues] = useState<any[] | null>(null);
@@ -68,7 +72,21 @@ export default function AddCampaignSheet() {
         payments: [],
       })),
     };
-    mutate(campaignData)
+    
+    const callBackReq = {
+      onSuccess: () => {      
+          queryClient.invalidateQueries({ 
+            queryKey: ["campaign", "title-description"],
+            refetchType: 'active',
+          });
+          reset()
+          toast.success("Successfully Add Campaign");
+          },
+      onError() {
+        toast.error("An unexpected error has occurred, try again")
+      }
+    };
+    mutate(campaignData, callBackReq)
   };
   
 

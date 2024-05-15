@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { T_Campaign } from "@repo/contract";
 import { useForm, SubmitHandler } from "react-hook-form"
+import { useQueryClient } from "@tanstack/react-query";
 
 import {
   Sheet,
@@ -24,13 +25,16 @@ import {
 } from "@/components/ui/select"
 import { useState } from "react";
 import useUpdateCampaign from "./hooks/useUpdateCampaign";
+import { toast } from "sonner";
 
 export default function EditCampaignSheet({ campaign }: { campaign: T_Campaign }) {
+  const queryClient = useQueryClient()
   const campaignId = campaign._id ?? ""
   const { mutate } = useUpdateCampaign(campaignId);  
   const {
     register,
-    handleSubmit
+    handleSubmit,
+    reset
   } = useForm<any>()
 
   const [leadUniqueKey, setLeadUniqueKey] = useState<string | null>(null);
@@ -43,7 +47,21 @@ export default function EditCampaignSheet({ campaign }: { campaign: T_Campaign }
     leadUniqueKey: leadUniqueKey,
     masterPassword
   };
-    mutate(campaignData)
+    const callBackReq = {
+      onSuccess: () => {      
+          queryClient.invalidateQueries({ 
+            queryKey: ["campaign", "title-description"],
+            refetchType: 'active',
+          });
+          
+          toast.success("Successfully Update Campaign");
+          },
+        onError() {
+        toast.error("An unexpected error has occurred, try again")
+      }
+    };
+    mutate(campaignData, callBackReq)
+    reset()
   }
   
   return (
