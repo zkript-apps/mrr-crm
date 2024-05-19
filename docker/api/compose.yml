@@ -5,6 +5,6 @@ services:
     container_name: mrrcrm-api-dev
     restart: unless-stopped
     env_file:
-      - ../../.env.development
+      - ../../.env.production.local
     ports:
       - 9000:9000
