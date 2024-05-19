@@ -58,15 +58,6 @@ export default function CampaignCard({
         {isAdmin ? (
           <div className="flex w-full">
             <EditCampaignSheet campaign={campaign} />
-            <Button
-              className="ml-auto"
-              variant="outline"
-              onClick={() =>
-                router.push(`/admin/payment-methods/${campaign._id}`)
-              }
-            >
-              Payment Methods
-            </Button>
           </div>
         ) : (
           <Button onClick={handleLocalStorageSubmit}>Select</Button>

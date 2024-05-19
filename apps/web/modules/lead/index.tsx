@@ -66,16 +66,12 @@ const Lead = () => {
               Basic Information
             </TabsTrigger>
             <TabsTrigger value="paymentHistory">Payment History</TabsTrigger>
-            <TabsTrigger value="paymentMethods">Payment Methods</TabsTrigger>
           </TabsList>
           <TabsContent className="mt-8" value="basicInformation">
             <BasicInformation />
           </TabsContent>
           <TabsContent className="mt-8" value="paymentHistory">
             <PaymentHistory />
-          </TabsContent>
-          <TabsContent className="mt-8" value="paymentMethods">
-            <PaymentMethods />
           </TabsContent>
         </Tabs>
       </div>
