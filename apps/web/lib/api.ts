@@ -1,9 +1,15 @@
+import Cookies from "js-cookie";
+
 export class ApiService {
   private constructHeader(removeContentType = false) {
+    const accessToken = Cookies.get("token");
     const headers = {
       ...(!removeContentType && {
         "Content-Type": "application/json",
       }),
+      ...(accessToken
+        ? { authorization: `Bearer ${accessToken}` }
+        : {}),
     } as Record<string, any>;
     const options = {
       headers,

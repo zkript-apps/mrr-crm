@@ -57,7 +57,7 @@ export const getCampaign = async (req: Request, res: Response) => {
   }
 };
 
-export const addCampain = async (req: Request, res: Response) => {
+export const addCampaign = async (req: Request, res: Response) => {
   const {
     title,
     description,

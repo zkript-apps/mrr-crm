@@ -10,6 +10,12 @@ const users = new Schema({
     default: false,
     type: Boolean,
   },
+  role: {
+    type: String,
+    required: true,
+    default: "Agent",
+    enum: ["Admin", "Agent"]
+  },
   createdAt: {
     type: Date,
     default: Date.now(),

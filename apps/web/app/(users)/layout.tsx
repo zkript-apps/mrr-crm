@@ -1,8 +1,9 @@
 import QueryWrapper from "@/components/query-wrapper";
 import CampaignCheckerWrapper from "@/components/campaign-checker-wrapper";
-import "./globals.css";
+import "../globals.css";
 import type { Metadata } from "next";
 import { Toaster } from "@/components/ui/sonner";
+import AuthGuardWrapper from "@/components/auth-guard-wrapper";
 
 export const metadata: Metadata = {
   title: "MRR - CRM",
@@ -18,7 +19,11 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <QueryWrapper>
-          <CampaignCheckerWrapper>{children}</CampaignCheckerWrapper>
+          <AuthGuardWrapper>
+            <CampaignCheckerWrapper>
+              {children}
+            </CampaignCheckerWrapper>
+          </AuthGuardWrapper>
         </QueryWrapper>
         <Toaster richColors position="top-right" />
       </body>

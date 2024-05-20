@@ -11,7 +11,8 @@
         "PORT",
         "WEB_URL",
         "API_URL",
-        "NODE_ENV"
+        "NODE_ENV",
+        "SIGN_KEY"
       ]
     },
     "lint": {
