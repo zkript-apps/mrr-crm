@@ -1,10 +1,8 @@
-import AdminCampaigns from '@/modules/admin/campaigns'
-import React from 'react'
+import AdminCampaigns from "@/modules/admin/campaigns";
+import React from "react";
 
 const AdminCampaignsPage = () => {
-  return (
-    <AdminCampaigns/>
-  )
-}
+  return <AdminCampaigns />;
+};
 
-export default AdminCampaignsPage
+export default AdminCampaignsPage;

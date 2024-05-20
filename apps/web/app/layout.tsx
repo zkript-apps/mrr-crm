@@ -1,10 +1,8 @@
 import QueryWrapper from "@/components/query-wrapper";
+import CampaignCheckerWrapper from "@/components/campaign-checker-wrapper";
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "MRR - CRM",
@@ -18,9 +16,9 @@ export default function RootLayout({
 }): JSX.Element {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body>
         <QueryWrapper>
-          {children}
+          <CampaignCheckerWrapper>{children}</CampaignCheckerWrapper>
         </QueryWrapper>
         <Toaster richColors position="top-right" />
       </body>

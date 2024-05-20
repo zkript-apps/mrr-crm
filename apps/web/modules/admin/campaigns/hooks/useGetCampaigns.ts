@@ -1,10 +1,10 @@
 import { ApiService } from "@/lib/api";
-import { useQuery } from "@tanstack/react-query"
-import { API_CAMPAIGNS } from "@/lib/api-routes"
+import { useQuery } from "@tanstack/react-query";
+import { API_CAMPAIGNS } from "@/lib/api-routes";
 
 export async function getAllRules() {
-  const apiService = new ApiService()
-  return await apiService.get(`${API_CAMPAIGNS}`)
+  const apiService = new ApiService();
+  return await apiService.get(`${API_CAMPAIGNS}`);
 }
 
 function useGetCampaigns() {
@@ -12,7 +12,7 @@ function useGetCampaigns() {
     queryKey: ["campaigns"],
     queryFn: () => getAllRules(),
     refetchOnWindowFocus: false,
-  })
-  return query
+  });
+  return query;
 }
-export default useGetCampaigns
+export default useGetCampaigns;

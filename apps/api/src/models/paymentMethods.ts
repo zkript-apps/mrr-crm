@@ -1,26 +1,26 @@
 import mongoose, { Schema } from "mongoose";
 
 const steps = new Schema({
-    step:{
-        type: Number,
-        require: true
-    },
-    instruction:{
-        type:String,
-        require: true
-    }
-})
+  step: {
+    type: Number,
+    require: true,
+  },
+  instruction: {
+    type: String,
+    require: true,
+  },
+});
 
-const paymentMethod  = new Schema({
+const paymentMethod = new Schema({
   campaign: {
     type: mongoose.Types.ObjectId,
     ref: "Campaign",
     required: true,
-    unique: false
+    unique: false,
   },
   title: {
     type: String,
-    required: true
+    required: true,
   },
   steps: [steps],
   createdAt: {

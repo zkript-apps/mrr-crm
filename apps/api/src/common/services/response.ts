@@ -1,6 +1,5 @@
 import { T_BackendResponse } from "@repo/contract";
 
-
 export type T_ResponseParams = Omit<T_BackendResponse, "error">;
 
 export class ResponseService {

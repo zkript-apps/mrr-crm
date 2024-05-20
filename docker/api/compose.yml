@@ -1,0 +1,10 @@
+version: '3.8'
+services:
+  es-api:
+    image: jpmadrigal/mrrcrm-api-dev:latest
+    container_name: mrrcrm-api-dev
+    restart: unless-stopped
+    env_file:
+      - ../../.env.production.local
+    ports:
+      - 9000:9000

@@ -1,73 +1,68 @@
-import Cookies from "js-cookie";
-
-enum EContentType {
-  JSON = "application/json",
-  formData = "multipart/form-data",
-}
-
 export class ApiService {
-  private isAuthRequired: boolean = true;
-  private constructHeader(isFormData = false, removeContentType = false) {
-    const accessToken = Cookies.get("accessToken");
-
-    const res = {
+  private constructHeader(removeContentType = false) {
+    const headers = {
       ...(!removeContentType && {
-        "Content-Type": isFormData ? EContentType.formData : EContentType.JSON,
+        "Content-Type": "application/json",
       }),
-      ...(accessToken && this.isAuthRequired
-        ? { Authorization: `Bearer ${accessToken}` }
-        : {}),
     } as Record<string, any>;
-
-    return res;
+    const options = {
+      headers,
+    };
+    return options;
   }
 
   async get<T = any>(
     endpoint: string,
     params?: Record<string, any>,
-    signal?: AbortSignal
+    signal?: AbortSignal,
   ): Promise<T | any> {
     const reqParams = new URLSearchParams(params).toString();
-    const header = this.constructHeader();
+    const headers = this.constructHeader();
 
-    const res = fetch(
-      `${endpoint}${params ? `?${reqParams}` : ""}`,
-      {
-        headers: header,
-        ...(signal ? { signal } : {}),
-      }
-    );
+    const res = fetch(`${endpoint}${params ? `?${reqParams}` : ""}`, {
+      ...headers,
+      ...(signal ? { signal } : {}),
+    });
 
     return (await res).json();
   }
 
-  async post<T = any>(endpoint: string, body: any): Promise<T> {
-    const header = this.constructHeader();
-    const res = fetch(`${endpoint}`, {
+  async post<T = any>(
+    endpoint: string,
+    body: any,
+    raw?: boolean,
+    removeContentType?: boolean,
+  ): Promise<T> {
+    const otherOptions = this.constructHeader(removeContentType);
+    const res = fetch(endpoint, {
       method: "POST",
-      body: JSON.stringify(body),
-      headers: header,
+      body: !raw ? JSON.stringify(body) : body,
+      ...otherOptions,
     });
     return (await res).json();
   }
-
-  async patch(endpoint: string, body: any) {
-    const header = this.constructHeader();
-
-    const res = fetch(`${endpoint}`, {
+  //TODO: fix if body is not FormData use application/json as contentType, right now it is using text/plain;charset=UTF-8
+  async patch<T = any>(
+    endpoint: string,
+    body?: any,
+    raw?: boolean,
+    removeContentType?: boolean,
+  ): Promise<T> {
+    const otherOptions = this.constructHeader(removeContentType);
+    const res = fetch(endpoint, {
       method: "PATCH",
-      body: JSON.stringify(body),
-      headers: header,
+      body: !raw ? JSON.stringify(body) : body,
+      ...otherOptions,
     });
     return (await res).json();
   }
 
   async delete(endpoint: string, payload?: { [key: string]: string }) {
-    const header = this.constructHeader();
+    const headers = this.constructHeader();
 
     const res = fetch(`${endpoint}`, {
       method: "DELETE",
-      headers: header,
+      ...headers,
     });
     return (await res).json();
   }
