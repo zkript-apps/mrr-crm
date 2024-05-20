@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,16 +10,24 @@ const Search = () => {
   const [search, setSearch] = useState("");
   const onSubmit = (e: any) => {
     e.preventDefault();
-    if(search) {
-      router.push(`/lead/${search}`)
+    if (search) {
+      router.push(`/lead/${search}`);
     } else {
-      toast.error("Please add search phrase")
+      toast.error("Please add search phrase");
     }
-  }
+  };
   return (
     <div className="space-y-6 p-10 pb-16">
-      <form className="flex w-full max-w-sm items-center space-x-2" onSubmit={onSubmit}>
-        <Input type="text" placeholder="Search by ID" autoFocus onChange={(e) => setSearch(e.target.value)} />
+      <form
+        className="flex w-full max-w-sm items-center space-x-2"
+        onSubmit={onSubmit}
+      >
+        <Input
+          type="text"
+          placeholder="Search by ID"
+          autoFocus
+          onChange={(e) => setSearch(e.target.value)}
+        />
         <Button type="submit">Search</Button>
       </form>
     </div>

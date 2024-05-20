@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { T_Campaign } from "@repo/contract";
-import { useForm, SubmitHandler } from "react-hook-form"
+import { useForm, SubmitHandler } from "react-hook-form";
 import { useQueryClient } from "@tanstack/react-query";
 
 import {
@@ -32,12 +32,14 @@ export default function EditCampaignSheet({
 }: {
   campaign: T_Campaign;
 }) {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
   const campaignId = campaign._id ?? "";
   const { mutate } = useUpdateCampaign(campaignId);
   const { register, handleSubmit, reset } = useForm<any>();
 
-  const [leadUniqueKey, setLeadUniqueKey] = useState<string | null>(campaign.leadUniqueKey);
+  const [leadUniqueKey, setLeadUniqueKey] = useState<string | null>(
+    campaign.leadUniqueKey,
+  );
 
   const onSubmit: SubmitHandler<any> = (data: any) => {
     const { title, description, masterPassword } = data;
@@ -48,27 +50,25 @@ export default function EditCampaignSheet({
       masterPassword,
     };
     const callBackReq = {
-      onSuccess: (data:any) => {      
-        if(!data.error){
-        queryClient.invalidateQueries({ 
-          queryKey: ["campaigns"],
-          refetchType: 'active',
-        });
-        toast.success("Successfully Update Campaign");
-        }
-        else{
-        toast.error(data.message);
+      onSuccess: (data: any) => {
+        if (!data.error) {
+          queryClient.invalidateQueries({
+            queryKey: ["campaigns"],
+            refetchType: "active",
+          });
+          toast.success("Successfully Update Campaign");
+        } else {
+          toast.error(data.message);
         }
       },
-        onError() {
-        toast.error("An unexpected error has occurred, try again")
-      }
+      onError() {
+        toast.error("An unexpected error has occurred, try again");
+      },
     };
-    mutate(campaignData, callBackReq)
-    reset()
+    mutate(campaignData, callBackReq);
+    reset();
   };
-   
-  
+
   return (
     <Sheet>
       <SheetTrigger asChild>

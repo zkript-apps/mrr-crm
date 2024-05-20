@@ -71,7 +71,10 @@ function Remarks({
                 className="h-32"
               />
               <div className="flex justify-end">
-                <Button disabled={isUpdateCampaignLeadLoading} className="w-1/6">
+                <Button
+                  disabled={isUpdateCampaignLeadLoading}
+                  className="w-1/6"
+                >
                   Add
                 </Button>
               </div>
@@ -115,7 +118,10 @@ function Remarks({
                       <div key={index}>
                         <div className="p-4">
                           <div className="text-xs text-gray-500">
-                            {format(new Date(remark.date), "MMMM d, yyyy h:mm a")}
+                            {format(
+                              new Date(remark.date),
+                              "MMMM d, yyyy h:mm a",
+                            )}
                           </div>
                           <div>{remark.comment}</div>
                         </div>

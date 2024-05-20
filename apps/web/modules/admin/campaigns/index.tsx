@@ -16,13 +16,9 @@ const AdminCampaigns = () => {
     <div className="space-y-6 p-10 pb-16">
       <div className="space-y-0.5 flex w-full">
         <div>
-          <Button
-                onClick={() => router.push("/")}
-                className="mb-4"
-                size="sm"
-              >
-                Back to Home
-              </Button>
+          <Button onClick={() => router.push("/")} className="mb-4" size="sm">
+            Back to Home
+          </Button>
           <h2 className="text-2xl font-bold tracking-tight">Campaigns</h2>
           <p className="text-muted-foreground">
             Select your current campaign to retrieve the right data.

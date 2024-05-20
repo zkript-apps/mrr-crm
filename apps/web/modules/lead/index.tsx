@@ -21,15 +21,11 @@ const Lead = () => {
   return (
     <div className="space-y-6 p-10 pb-16">
       <div className="flex flex-col">
-      <div>
-      <Button
-                onClick={() => router.push("/")}
-                className="mb-4"
-                size="sm"
-              >
-                Back to Home
+        <div>
+          <Button onClick={() => router.push("/")} className="mb-4" size="sm">
+            Back to Home
           </Button>
-          </div>
+        </div>
         {titleAndDescription?.item ? (
           !isTitleAndDescriptionLoading ? (
             <div>
@@ -56,7 +52,7 @@ const Lead = () => {
             <div className="text-gray-500">No description</div>
           </div>
         )}
-          <Separator className="my-6" />
+        <Separator className="my-6" />
       </div>
       <div>
         {/* <Tabs tabs={tabs} /> */}
