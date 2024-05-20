@@ -24,6 +24,7 @@ const Payments = new Schema({
   fileName: String,
   remarks: String,
 });
+
 const Leads = new Schema({
   values: {
     type: Object,
@@ -36,7 +37,7 @@ const Leads = new Schema({
   },
 });
 
-const campaign = new Schema({
+const campaigns = new Schema({
   title: {
     type: String,
     required: true,
@@ -62,4 +63,4 @@ const campaign = new Schema({
   },
 });
 
-export default mongoose.model("Campaign", campaign);
+export default mongoose.model("Campaigns", campaigns);

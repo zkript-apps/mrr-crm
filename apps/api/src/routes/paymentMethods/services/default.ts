@@ -8,7 +8,7 @@ import {
   Z_Update_PaymentMethod,
 } from "@repo/contract";
 import { Request, Response } from "express";
-import campaign from "@/models/campaign";
+import campaigns from "@/models/campaigns";
 import { MASTER_PASSWORD } from "@/common/constants/ev";
 const response = new ResponseService();
 export const getAllPaymentMethods = async (req: Request, res: Response) => {
@@ -81,7 +81,7 @@ export const addPaymentMethod = async (req: Request, res: Response) => {
     const isValidInput = Z_Add_PaymentMethod.safeParse(req.body);
     if (isValidInput.success) {
       try {
-        const getCampaign = await campaign.findOne({
+        const getCampaign = await campaigns.findOne({
           _id: campaignId,
           deletedAt: null,
         });

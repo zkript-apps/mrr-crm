@@ -1,11 +1,10 @@
 import { UNKNOWN_ERROR_OCCURRED } from "@/common/constants";
 import { ResponseService } from "@/common/services/response";
-import campaign from "@/models/campaign";
+import campaigns from "@/models/campaigns";
 import fs from "fs";
 import { v4 as uuidv4 } from "uuid";
 import {
   T_Add_Campaign,
-  T_Payments,
   T_Update_Campaign,
   T_Update_Lead,
   Z_Add_Campaign,
@@ -19,8 +18,8 @@ import { MASTER_PASSWORD } from "@/common/constants/ev";
 const response = new ResponseService();
 export const getAllCampaigns = async (req: Request, res: Response) => {
   try {
-    const getAllcampains = await campaign.find({ deletedAt: null });
-    const countAllCampaigns = await campaign
+    const getAllCampaigns = await campaigns.find({ deletedAt: null });
+    const countAllCampaigns = await campaigns
       .find({ deletedAt: null })
       .countDocuments();
     if (!getAllCampaigns) {
@@ -28,7 +27,7 @@ export const getAllCampaigns = async (req: Request, res: Response) => {
     }
     res.json(
       response.success({
-        items: getAllcampains,
+        items: getAllCampaigns,
         allItemCount: countAllCampaigns,
       }),
     );
@@ -44,7 +43,7 @@ export const getAllCampaigns = async (req: Request, res: Response) => {
 export const getCampaign = async (req: Request, res: Response) => {
   const campaignId = req.params.campaignId;
   try {
-    const getCampaignById = await campaign.findOne({
+    const getCampaignById = await campaigns.findOne({
       _id: campaignId,
       deletedAt: null,
     });
@@ -71,7 +70,7 @@ export const addCampain = async (req: Request, res: Response) => {
     const isValidInput = Z_Add_Campaign.safeParse(req.body);
     if (isValidInput.success) {
       try {
-        const newCampaign = new campaign({
+        const newCampaign = new campaigns({
           title: title,
           description: description,
           leadUniqueKey: leadUniqueKey,
@@ -110,7 +109,7 @@ export const updateCampaign = async (req: Request, res: Response) => {
   const isValidInput = Z_Update_Campaign.safeParse(req.body);
   if (isValidInput.success) {
     try {
-      const getCampaign = campaign.findOne({
+      const getCampaign = campaigns.findOne({
         _id: campaignId,
         deletedAt: null,
       });
@@ -119,7 +118,7 @@ export const updateCampaign = async (req: Request, res: Response) => {
           response.error({ message: "This campain not exists on our system" }),
         );
       }
-      const editCampaign = await campaign.findByIdAndUpdate(
+      const editCampaign = await campaigns.findByIdAndUpdate(
         campaignId,
         {
           $set: req.body,
@@ -161,7 +160,7 @@ export const updateCampaignValidate = async (req: Request, res: Response) => {
   if (masterPassword === MASTER_PASSWORD) {
     if (isValidInput.success) {
       try {
-        const getCampaign = campaign.findOne({
+        const getCampaign = campaigns.findOne({
           _id: campaignId,
           deletedAt: null,
         });
@@ -172,7 +171,7 @@ export const updateCampaignValidate = async (req: Request, res: Response) => {
             }),
           );
         }
-        const editCampaign = await campaign.findByIdAndUpdate(
+        const editCampaign = await campaigns.findByIdAndUpdate(
           campaignId,
           {
             $set: req.body,
@@ -208,7 +207,7 @@ export const updateCampaignValidate = async (req: Request, res: Response) => {
 export const deleteCampaign = async (req: Request, res: Response) => {
   const campaignId = req.params.campaignId;
   try {
-    const getCampaign = await campaign.findOne({
+    const getCampaign = await campaigns.findOne({
       _id: campaignId,
       deletedAt: null,
     });
@@ -217,7 +216,7 @@ export const deleteCampaign = async (req: Request, res: Response) => {
         response.error({ message: "Campaign not exist or already deleted" }),
       );
     }
-    const deleteCampaignById = await campaign.findByIdAndUpdate(campaignId, {
+    const deleteCampaignById = await campaigns.findByIdAndUpdate(campaignId, {
       $set: {
         deletedAt: Date.now(),
       },
@@ -240,7 +239,7 @@ export const deleteCampaign = async (req: Request, res: Response) => {
 export const getCampaignNameDesc = async (req: Request, res: Response) => {
   const campaignId = req.params.campaignId;
   try {
-    const getNameAndDesc = await campaign.findOne({
+    const getNameAndDesc = await campaigns.findOne({
       _id: campaignId,
       deletedAt: null,
     });
@@ -264,7 +263,7 @@ export const getCampaignNameDesc = async (req: Request, res: Response) => {
 export const getCampaignPattern = async (req: Request, res: Response) => {
   const campaignId = req.params.campaignId;
   try {
-    const getCampain = await campaign.findOne({
+    const getCampain = await campaigns.findOne({
       _id: campaignId,
       deletedAt: null,
     });
@@ -288,7 +287,7 @@ export const getCampaignLeadById = async (req: Request, res: Response) => {
   const campaignId = req.params.campaignId;
   const uniqueId = req.params.uniqueId;
   try {
-    const getCampain = await campaign.findOne({
+    const getCampain = await campaigns.findOne({
       _id: campaignId,
       deletedAt: null,
     });
@@ -350,7 +349,7 @@ export const updateCampaignLeadById = async (req: Request, res: Response) => {
   const isValidInput = Z_Leads.safeParse(req.body);
   if (isValidInput.success) {
     try {
-      const getCampaign = await campaign.findOne({ _id: campaignId });
+      const getCampaign = await campaigns.findOne({ _id: campaignId });
       if (!getCampaign) {
         return res.json(response.error({ message: "Campaign not found" }));
       }
