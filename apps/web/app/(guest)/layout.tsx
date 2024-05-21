@@ -1,5 +1,4 @@
 import QueryWrapper from "@/components/query-wrapper";
-import CampaignCheckerWrapper from "@/components/campaign-checker-wrapper";
 import "../globals.css";
 import type { Metadata } from "next";
 import { Toaster } from "@/components/ui/sonner";
@@ -18,9 +17,9 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <QueryWrapper>
-          <CampaignCheckerWrapper>{children}</CampaignCheckerWrapper>
+          {children}
         </QueryWrapper>
-        <Toaster richColors position="top-right" />
+        <Toaster position="top-center" />
       </body>
     </html>
   );

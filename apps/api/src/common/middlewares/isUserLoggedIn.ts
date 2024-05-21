@@ -23,7 +23,7 @@ const isUserLoggedIn = async (
       );
       const user = await users.findOne({
         username,
-      });
+      }).populate("campaignId", "_id title").exec();
       res.locals.user = user
       next()
     } catch (err: any) {

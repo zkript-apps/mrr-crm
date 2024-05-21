@@ -1,3 +1,4 @@
+import { T_Campaign } from "@repo/contract";
 import { create } from "zustand";
 
 type T_Auth = {
@@ -6,6 +7,7 @@ type T_Auth = {
   firstName: string | null,
   lastName: string | null,
   role: string | null,
+  campaignId: string | T_Campaign | null,
 };
 
 type T_Auth_Action = {
@@ -19,6 +21,7 @@ const useAuthStore = create<T_Auth & T_Auth_Action>(
     firstName: null,
     lastName: null,
     role: null,
+    campaignId: null,
     update: (auth: T_Auth) => set(() => ({ ...auth })),
   }),
 );

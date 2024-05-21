@@ -6,16 +6,17 @@ import PaymentHistoryCardSkeleton from "./payment-history-card-skeleton";
 import { T_Payment } from "../basic-information/hooks/useUpdateCampaignLeadById";
 import { Button } from "@/components/ui/button";
 import AddNewPaymentModal from "./add-payment-modal";
-import useCampaignDataStore from "@/common/store/useCampaignDataStore";
+import useAuthStore from "@/common/store/useAuthStore";
+import { T_Campaign } from "@repo/contract";
 
 function PaymentHistory() {
   const params = useParams();
   const leadId = params.leadId as string;
-  const campaignId = useCampaignDataStore(
-    (state) => state.campaignData?.campaignId,
+  const auth = useAuthStore(
+    (state) => state,
   );
   const { data: campaignLead, isLoading: isCampaignLeadLoading } =
-    useGetCampaignLeadById(campaignId as string, leadId);
+    useGetCampaignLeadById((auth.campaignId as T_Campaign)._id as string, leadId);
   return (
     <div className="flex flex-col gap-8">
       <AddNewPaymentModal campaignLead={campaignLead?.item} leadId={leadId}>

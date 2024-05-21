@@ -1,8 +1,13 @@
-import Campaigns from "@/modules/campaigns";
+import AdminRoleWrapper from "@/components/admin-role-wrapper";
+import AdminCampaigns from "@/modules/admin/campaigns";
 import React from "react";
 
-const CampaignsPage = () => {
-  return <Campaigns />;
+const AdminCampaignsPage = () => {
+  return (
+    <AdminRoleWrapper>
+      <AdminCampaigns />
+    </AdminRoleWrapper>
+  );
 };
 
-export default CampaignsPage;
+export default AdminCampaignsPage;

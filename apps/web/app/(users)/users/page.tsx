@@ -1,11 +1,11 @@
 import AdminRoleWrapper from "@/components/admin-role-wrapper";
-import AdminCampaigns from "@/modules/admin/campaigns";
+import AdminUsers from "@/modules/admin/users"
 import React from "react";
 
 const AdminCampaignsPage = () => {
   return (
     <AdminRoleWrapper>
-      <AdminCampaigns />
+      <AdminUsers />
     </AdminRoleWrapper>
   );
 };

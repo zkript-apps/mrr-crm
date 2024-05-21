@@ -18,7 +18,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Upload } from "lucide-react";
 import useUploadPaymentReceipt from "./hooks/useUploadPaymentReceipt";
-import useCampaignDataStore from "@/common/store/useCampaignDataStore";
+import useAuthStore from "@/common/store/useAuthStore";
+import { T_Campaign } from "@repo/contract";
 
 function AddNewPaymentModal({
   children,
@@ -33,11 +34,11 @@ function AddNewPaymentModal({
   const queryClient = useQueryClient();
   const [file, setFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const campaignId = useCampaignDataStore(
-    (state) => state.campaignData?.campaignId,
+  const auth = useAuthStore(
+    (state) => state,
   );
   const { mutate, isPending: isUpdateCampaignLeadLoading } =
-    useUpdateCampaignLeadById(campaignId as string, leadId);
+    useUpdateCampaignLeadById((auth.campaignId as T_Campaign)._id as string, leadId);
   const { mutate: uploadImage, isPending: isUploadingImage } =
     useUploadPaymentReceipt();
 

@@ -9,7 +9,7 @@ const response = new ResponseService()
 
 export const getUsers = async (req: Request, res: Response) => {
   try {
-    const getAllUsers = await users.find({ deletedAt: null });
+    const getAllUsers = await users.find({ deletedAt: null }).populate("campaignId", "_id title").exec();
     const countAllUsers = await users
       .find({ deletedAt: null })
       .countDocuments();
@@ -34,7 +34,7 @@ export const getUsers = async (req: Request, res: Response) => {
 export const getUserById = async (req: Request, res: Response) => {
   if(req.params.userId) {
     try {
-      const getUser = await users.findOne({ _id: req.params.userId, deletedAt: null });
+      const getUser = await users.findOne({ _id: req.params.userId, deletedAt: null }).populate("campaignId", "_id title").exec();
       if (!getUser) {
         return res.json(response.success({ message: "No user found" }));
       }
@@ -67,8 +67,9 @@ export const addUser = async (req: Request, res: Response) => {
     lastName,
     role,
     password,
+    campaignId
   } = req.body;
-  if(username && firstName && lastName && role && password) {
+  if(username && firstName && lastName && role && password && campaignId) {
     try {
       const newUser = new users({
         username,
@@ -76,6 +77,7 @@ export const addUser = async (req: Request, res: Response) => {
         lastName,
         role,
         password,
+        campaignId
       });
       await newUser.save();
       res.json(
@@ -200,7 +202,8 @@ export const verify = async (req: Request, res: Response) => {
         username: user.username,
         firstName: user.firstName,
         lastName: user.lastName,
-        role: user.role
+        role: user.role,
+        campaignId: user.campaignId,
       },
     }),
   );

@@ -2,30 +2,31 @@
 import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import BasicInformation from "./components/basic-information";
-import PaymentMethods from "./components/payment-methods";
 import useGetCampaignTitleAndDescription from "./components/basic-information/hooks/useGetCampaignTitleAndDescription";
 import { Skeleton } from "@/components/skeleton";
 import PaymentHistory from "./components/payment-history";
-import useCampaignDataStore from "@/common/store/useCampaignDataStore";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { LucideArrowLeft } from "lucide-react";
+import useAuthStore from "@/common/store/useAuthStore";
+import { T_Campaign } from "@repo/contract";
 
 const Lead = () => {
   const router = useRouter();
-  const campaignId = useCampaignDataStore(
-    (state) => state.campaignData?.campaignId,
+  const auth = useAuthStore(
+    (state) => state,
   );
   const { data: titleAndDescription, isLoading: isTitleAndDescriptionLoading } =
-    useGetCampaignTitleAndDescription(campaignId as string);
+    useGetCampaignTitleAndDescription((auth.campaignId as T_Campaign)._id as string);
   return (
     <div className="space-y-6 p-10 pb-16">
+      <div>
+        <Button onClick={() => router.push("/dashboard")} variant="outline" size="sm">
+          <LucideArrowLeft className="h-4 w-4 mr-2" /> Back to Dashboard
+        </Button>
+      </div>
       <div className="flex flex-col">
-        <div>
-          <Button onClick={() => router.push("/")} className="mb-4" size="sm">
-            Back to Home
-          </Button>
-        </div>
         {titleAndDescription?.item ? (
           !isTitleAndDescriptionLoading ? (
             <div>
@@ -52,7 +53,7 @@ const Lead = () => {
             <div className="text-gray-500">No description</div>
           </div>
         )}
-        <Separator className="my-6" />
+        <Separator className="mt-6" />
       </div>
       <div>
         {/* <Tabs tabs={tabs} /> */}

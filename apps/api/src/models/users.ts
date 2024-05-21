@@ -16,6 +16,11 @@ const users = new Schema({
     default: "Agent",
     enum: ["Admin", "Agent"]
   },
+  campaignId: {
+    type: mongoose.Types.ObjectId,
+    ref: "Campaigns",
+    required: true,
+  },
   createdAt: {
     type: Date,
     default: Date.now(),

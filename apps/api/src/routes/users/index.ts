@@ -6,11 +6,11 @@ import isUserLoggedIn from "@/common/middlewares/isUserLoggedIn";
 const router: Router = express.Router();
 
 router.get("/", isUserLoggedIn, isUserAdmin, getUsers);
-router.post("/", addUser);
-router.patch("/:userId", isUserLoggedIn, updateUser);
+router.post("/", isUserLoggedIn, isUserAdmin, addUser);
+router.patch("/:userId", isUserLoggedIn, isUserAdmin, updateUser);
 
 router.post("/auth", authenticate);
 router.get("/verify", isUserLoggedIn, verify);
-router.get("/:userId", getUserById);
+router.get("/:userId", isUserLoggedIn, getUserById);
 
 export default router;

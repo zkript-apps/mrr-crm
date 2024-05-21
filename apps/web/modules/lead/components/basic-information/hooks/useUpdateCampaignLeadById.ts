@@ -13,6 +13,8 @@ export interface T_Payment {
 }
 
 interface Remark {
+  agentFirstName: string;
+  agentLastName: string;
   comment: string;
   date: string;
   _id?: string;
