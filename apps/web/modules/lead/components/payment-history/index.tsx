@@ -19,19 +19,22 @@ function PaymentHistory() {
     useGetCampaignLeadById((auth.campaignId as T_Campaign)._id as string, leadId);
   return (
     <div className="flex flex-col gap-6">
-      <AddNewPaymentModal campaignLead={campaignLead?.item} leadId={leadId}>
-        <Button className="w-44">Add New Payment</Button>
-      </AddNewPaymentModal>
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-5">
-        {campaignLead?.item ? (
-          isCampaignLeadLoading ? (
-            <div>
-              <PaymentHistoryCardSkeleton />
-              <PaymentHistoryCardSkeleton />
-              <PaymentHistoryCardSkeleton />
-            </div>
-          ) : (
-            campaignLead.item.payments.sort((a: T_Payments, b: T_Payments) => {
+      {campaignLead.item && (
+        <AddNewPaymentModal campaignLead={campaignLead?.item} leadId={leadId}>
+          <Button className="w-44">Add New Payment</Button>
+        </AddNewPaymentModal>
+      )}
+
+      {campaignLead?.item ? (
+        isCampaignLeadLoading ? (
+          <div>
+            <PaymentHistoryCardSkeleton />
+            <PaymentHistoryCardSkeleton />
+            <PaymentHistoryCardSkeleton />
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-5">
+            {campaignLead.item.payments.sort((a: T_Payments, b: T_Payments) => {
               const dateA = new Date(a.date).getTime();
               const dateB = new Date(b.date).getTime();
               return dateB - dateA;
@@ -39,12 +42,15 @@ function PaymentHistory() {
               <div>
                 <PaymentHistoryCard key={payment._id} payment={payment} />
               </div>
-            ))
-          )
-        ) : (
-          <div className="text-gray-500">No payment history record</div>
-        )}
-      </div>
+            ))}
+            {!campaignLead.item.payments || campaignLead.item.payments.length === 0 ? (
+              <div className="text-gray-500">No payment history found</div>
+            ) : null}
+          </div>
+        )
+      ) : (
+        <div className="text-gray-500">There are no lead associated with this id</div>
+      )}
     </div>
   );
 }
