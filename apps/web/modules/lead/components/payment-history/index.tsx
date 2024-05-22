@@ -7,7 +7,7 @@ import { T_Payment } from "../basic-information/hooks/useUpdateCampaignLeadById"
 import { Button } from "@/components/ui/button";
 import AddNewPaymentModal from "./add-payment-modal";
 import useAuthStore from "@/common/store/useAuthStore";
-import { T_Campaign } from "@repo/contract";
+import { T_Campaign, T_Payments } from "@repo/contract";
 
 function PaymentHistory() {
   const params = useParams();
@@ -18,7 +18,7 @@ function PaymentHistory() {
   const { data: campaignLead, isLoading: isCampaignLeadLoading } =
     useGetCampaignLeadById((auth.campaignId as T_Campaign)._id as string, leadId);
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-6">
       <AddNewPaymentModal campaignLead={campaignLead?.item} leadId={leadId}>
         <Button className="w-44">Add New Payment</Button>
       </AddNewPaymentModal>
@@ -31,7 +31,11 @@ function PaymentHistory() {
               <PaymentHistoryCardSkeleton />
             </div>
           ) : (
-            campaignLead.item.payments.map((payment: T_Payment) => (
+            campaignLead.item.payments.sort((a: T_Payments, b: T_Payments) => {
+              const dateA = new Date(a.date).getTime();
+              const dateB = new Date(b.date).getTime();
+              return dateB - dateA;
+            }).map((payment: T_Payment) => (
               <div>
                 <PaymentHistoryCard key={payment._id} payment={payment} />
               </div>

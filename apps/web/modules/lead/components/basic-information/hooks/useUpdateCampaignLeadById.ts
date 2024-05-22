@@ -9,6 +9,8 @@ export interface T_Payment {
   repayAmount: number;
   fileName: string;
   remarks: string;
+  agentFirstName: string | null;
+  agentLastName: string | null;
   _id?: string;
 }
 

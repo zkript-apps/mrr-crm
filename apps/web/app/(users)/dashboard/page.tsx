@@ -6,8 +6,6 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { LucideArrowLeft } from "lucide-react";
-
 
 const DashboardPage = () => {
   const role = useAuthStore((state) => state.role);

@@ -385,17 +385,18 @@ export const getCampaignLeadById = async (req: Request, res: Response) => {
 export const updatePaymentImage = async (req: Request, res: Response) => {
   const files = req?.files?.image;
   try {
-    const dir = "./src/uploads";
-
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir);
-    }
     const dirRelative = "../../../uploads";
+    const absolutePath = path.resolve(__dirname, dirRelative);
+
+    if (!fs.existsSync(absolutePath)) {
+      fs.mkdirSync(absolutePath);
+    }
     //@ts-ignore
     const newFileName = `${uuidv4()}-${files.name}`;
-    const absolutePath = path.resolve(__dirname, dirRelative, newFileName);
+    const absolutePathImage = path.resolve(__dirname, dirRelative, newFileName);
+    console.log('directory: ', absolutePath)
     //@ts-ignore
-    await files?.mv(absolutePath);
+    await files?.mv(absolutePathImage);
     //@ts-ignore
     return res.json(
       response.success({

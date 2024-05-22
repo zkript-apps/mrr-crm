@@ -1,8 +1,8 @@
 version: '3.8'
 services:
   mrrcrm-web:
-    image: jpmadrigal/mrrcrm-web-dev:latest
-    container_name: mrrcrm-web-dev
+    image: jpmadrigal/mrrcrm-web-dev-arm:latest
+    container_name: mrrcrm-web-dev-arm
     restart: unless-stopped
     ports:
       - 3000:3000

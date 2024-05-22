@@ -8,13 +8,12 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { T_PaymentMethod } from "@/modules/admin/payment-methods/hooks/useAddPaymentMethod";
 import { AlertDialogDescription } from "@radix-ui/react-alert-dialog";
 
 export function PaymentMethodDialog({
   paymentMethod,
 }: {
-  paymentMethod: T_PaymentMethod;
+  paymentMethod: any;
 }) {
   return (
     <AlertDialog>
@@ -26,7 +25,7 @@ export function PaymentMethodDialog({
           <AlertDialogTitle>{paymentMethod.title}</AlertDialogTitle>
           <AlertDialogDescription>
             <div className="mt-5">
-              {paymentMethod.steps.map((step) => (
+              {paymentMethod.steps.map((step: any) => (
                 <div key={step._id}>
                   <div className="font-bold mt-2">Step {step.step}</div>
                   <div>{step.instruction}</div>

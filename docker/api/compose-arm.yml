@@ -1,11 +1,11 @@
 version: '3.8'
 services:
   mrrcrm-api:
-    image: jpmadrigal/mrrcrm-api-dev:latest
-    container_name: mrrcrm-api-dev
+    image: jpmadrigal/mrrcrm-api-dev-arm:latest
+    container_name: mrrcrm-api-dev-arm
     restart: unless-stopped
     env_file:
-      - ../../.env.production.local
+      - ../../.env.development
     ports:
       - 9000:9000
     volumes:

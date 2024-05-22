@@ -1,10 +1,10 @@
 version: '3.8'
 services:
   mrrcrm-web:
-    image: jpmadrigal/mrrcrm-web-dev:latest
+    image: jpmadrigal/mrrcrm-web-dev-arm:latest
     build:
       context: ../../
-      dockerfile: ./docker/web/Dockerfile
+      dockerfile: ./docker/web/Dockerfile.arm
       args:
         API_URL: ${API_URL}
         WEB_URL: ${WEB_URL}

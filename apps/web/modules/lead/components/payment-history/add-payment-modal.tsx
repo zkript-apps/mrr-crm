@@ -31,6 +31,7 @@ function AddNewPaymentModal({
   leadId: string;
 }) {
   const formRef = useRef<HTMLFormElement>(null);
+  const [open, setOpen] = useState(false);
   const queryClient = useQueryClient();
   const [file, setFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -60,6 +61,7 @@ function AddNewPaymentModal({
   };
 
   const onSubmit = (fileName?: string) => {
+    setOpen(false);
     const formattedData = {
       ...campaignLead,
       payments: [
@@ -68,6 +70,8 @@ function AddNewPaymentModal({
           ...formData,
           repayAmount: Number(formData.repayAmount),
           receiptAmount: Number(formData.receiptAmount),
+          agentFirstName: auth.firstName,
+          agentLastName: auth.lastName,
           fileName: fileName ? fileName : "",
           date: new Date().toISOString(),
         },
@@ -123,7 +127,7 @@ function AddNewPaymentModal({
 
   return (
     <div>
-      <AlertDialog>
+      <AlertDialog open={open} onOpenChange={setOpen}>
         <AlertDialogTrigger asChild>
           <div>{children}</div>
         </AlertDialogTrigger>
@@ -176,7 +180,6 @@ function AddNewPaymentModal({
               <label className="text-sm text-gray-500">Remarks</label>
               <div>
                 <Textarea
-                  required
                   disabled={isUpdateCampaignLeadLoading}
                   name="remarks"
                   value={formData.remarks}
@@ -212,9 +215,9 @@ function AddNewPaymentModal({
               </div>
             </div>
             <AlertDialogFooter className="mt-4">
-              <AlertDialogCancel disabled={isUpdateCampaignLeadLoading}>
+              <Button variant="outline" type="button" onClick={() => setOpen(false)}>
                 Cancel
-              </AlertDialogCancel>
+              </Button>
               <Button disabled={isUpdateCampaignLeadLoading} type="submit">
                 Save
               </Button>

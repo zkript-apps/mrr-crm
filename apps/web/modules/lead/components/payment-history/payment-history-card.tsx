@@ -33,7 +33,8 @@ export default function PaymentHistoryCard({
       <CardHeader>
         <CardTitle className="text-xl">{payment.method}</CardTitle>
         <CardDescription>
-          {format(new Date(payment.date), "MMMM d, yyyy h:mm a")}
+          <div>{format(new Date(payment.date), "MMMM d, yyyy h:mm a")}</div>
+          <div>Assisted by {payment.agentFirstName ? payment.agentFirstName : "---"} {payment.agentLastName ? payment.agentLastName : "---"}</div>
         </CardDescription>
       </CardHeader>
       <CardFooter className="flex justify-between">
@@ -81,6 +82,12 @@ export default function PaymentHistoryCard({
                       <p className="text-gray-400">No image</p>
                     )}
                   </div>
+                </div>
+              </div>
+              <div className="flex mt-4">
+                <div className="flex flex-col w-1/2">
+                  <label className="text-sm text-gray-500">Agent</label>
+                  <div className="text-lg">{payment.agentFirstName ? payment.agentFirstName : "---"} {payment.agentLastName ? payment.agentLastName : "---"}</div>
                 </div>
               </div>
             </div>
