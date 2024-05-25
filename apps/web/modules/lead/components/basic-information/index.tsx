@@ -3,16 +3,17 @@ import BasicInformationFields from "./basic-information-fields";
 import Remarks from "./remarks";
 import useGetCampaignLeadById from "./hooks/useGetCampaignLeadById";
 import { useParams } from "next/navigation";
-import useCampaignDataStore from "@/common/store/useCampaignDataStore";
+import useAuthStore from "@/common/store/useAuthStore";
+import { T_Campaign } from "@repo/contract";
 
 function BasicInformation() {
   const params = useParams();
   const leadId = params.leadId as string;
-  const campaignId = useCampaignDataStore(
-    (state) => state.campaignData?.campaignId,
+  const auth = useAuthStore(
+    (state) => state,
   );
   const { data: campaignLead, isLoading: isCampaignLeadLoading } =
-    useGetCampaignLeadById(campaignId as string, leadId);
+    useGetCampaignLeadById((auth.campaignId as T_Campaign)._id as string, leadId);
   return (
     <div className="flex gap-44">
       <div className="w-1/2">
@@ -23,7 +24,7 @@ function BasicInformation() {
           />
         ) : (
           <div className="text-gray-500">
-            There are no leads for this Campaign
+            There are no lead associated with this id
           </div>
         )}
       </div>

@@ -10,7 +10,8 @@ import useUpdateCampaignLeadById, {
 } from "./hooks/useUpdateCampaignLeadById";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import useCampaignDataStore from "@/common/store/useCampaignDataStore";
+import useAuthStore from "@/common/store/useAuthStore";
+import { T_Campaign } from "@repo/contract";
 
 interface T_Remark {
   comment: string;
@@ -27,11 +28,11 @@ function Remarks({
 }) {
   const queryClient = useQueryClient();
   const { register, handleSubmit, reset } = useForm<T_Remark>();
-  const campaignId = useCampaignDataStore(
-    (state) => state.campaignData?.campaignId,
+  const auth = useAuthStore(
+    (state) => state
   );
   const { mutate, isPending: isUpdateCampaignLeadLoading } =
-    useUpdateCampaignLeadById(campaignId as string, leadId);
+    useUpdateCampaignLeadById((auth.campaignId as T_Campaign)._id as string, leadId);
   const onSubmit = (data: any) => {
     const formattedData = {
       ...campaignLead,
@@ -39,6 +40,8 @@ function Remarks({
         ...campaignLead.remarks,
         {
           ...data,
+          agentFirstName: auth.firstName,
+          agentLastName: auth.lastName,
           date: new Date().toISOString(),
         },
       ],
@@ -118,12 +121,12 @@ function Remarks({
                       <div key={index}>
                         <div className="p-4">
                           <div className="text-xs text-gray-500">
-                            {format(
+                            {remark.agentFirstName} {remark.agentLastName} | {format(
                               new Date(remark.date),
                               "MMMM d, yyyy h:mm a",
                             )}
                           </div>
-                          <div>{remark.comment}</div>
+                          <div className="mt-2">{remark.comment}</div>
                         </div>
                         {/* Render Separator only if it's not the last item */}
                         {index !== campaignLead.remarks.length - 1 && (

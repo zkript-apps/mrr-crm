@@ -29,9 +29,6 @@ export const Z_Add_Campaign = z.object({
   title: z.string(),
   description: z.string(),
   leadUniqueKey: z.string(),
-  patterns: z.array(Z_Patterns),
-  leads: z.array(Z_Leads),
-  masterPassword: z.string(),
 });
 
 export const Z_Update_Campaign = z.object({

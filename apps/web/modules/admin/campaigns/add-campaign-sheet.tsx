@@ -31,13 +31,13 @@ export default function AddCampaignSheet() {
   const queryClient = useQueryClient();
   const { mutate } = useAddCampaign();
   const { register, handleSubmit, reset } = useForm<any>();
+  const [file, setFile] = useState<File | null>(null);
   const [patterns, setPatterns] = useState<string[] | null>(null);
-  const [leadValues, setLeadValues] = useState<any[] | null>(null);
   const [leadUniqueKey, setLeadUniqueKey] = useState<string | null>(null);
   const handleFileUpload = (e: any) => {
     const file = e.target.files[0];
+    setFile(file)
     const reader = new FileReader();
-
     reader.onload = (event) => {
       const workbook = XLSX.read(event.target?.result, { type: "binary" });
       const sheetName = workbook.SheetNames[0];
@@ -46,30 +46,17 @@ export default function AddCampaignSheet() {
       const getPatterns =
         sheetData.length > 0 ? Object.keys(sheetData[0] as any) : [];
       setPatterns(getPatterns as any);
-      setLeadValues(sheetData as any);
     };
-
     reader.readAsBinaryString(file);
   };
 
   const onSubmit: SubmitHandler<any> = (data: any) => {
-    const { title, description, masterPassword } = data;
-    const campaignData = {
-      title,
-      description,
-      leadUniqueKey,
-      masterPassword,
-      patterns: patterns?.map((pattern) => ({
-        name: pattern,
-        text:
-          pattern.charAt(0).toUpperCase() + pattern.slice(1).replace(/_/g, " "),
-      })),
-      leads: leadValues?.map((lead) => ({
-        values: lead,
-        remarks: [],
-        payments: [],
-      })),
-    };
+    const { title, description } = data;
+    const formData = new FormData();
+    formData.append("file", file as File);
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("leadUniqueKey", leadUniqueKey as string);
 
     const callBackReq = {
       onSuccess: (data: any) => {
@@ -78,7 +65,7 @@ export default function AddCampaignSheet() {
             queryKey: ["campaigns"],
             refetchType: "active",
           });
-          toast.success("Successfully Add Campaign");
+          toast.success("Successfully added Campaign");
         } else {
           toast.error(data.message);
         }
@@ -87,7 +74,7 @@ export default function AddCampaignSheet() {
         toast.error("An unexpected error has occurred, try again");
       },
     };
-    mutate(campaignData, callBackReq);
+    mutate(formData, callBackReq);
     reset();
   };
 
@@ -131,12 +118,15 @@ export default function AddCampaignSheet() {
               <Label className="text-right" htmlFor="picture">
                 Excel File
               </Label>
-              <Input
-                id="picture"
-                type="file"
-                className="col-span-3"
-                onChange={handleFileUpload}
-              />
+              <div className="col-span-3">
+                <Input
+                  id="picture"
+                  type="file"
+                  onChange={handleFileUpload}
+                  accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv"
+                />
+                <span className="text-gray-400 text-xs italic">Only accepts .xlsx and .csv files</span>
+              </div>
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="username" className="text-right">
@@ -161,18 +151,6 @@ export default function AddCampaignSheet() {
                     ))}
                 </SelectContent>
               </Select>
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="username" className="text-right">
-                Master Password
-              </Label>
-              <Input
-                {...register("masterPassword")}
-                id="description"
-                type="password"
-                required
-                className="col-span-3"
-              />
             </div>
           </div>
           <SheetFooter>

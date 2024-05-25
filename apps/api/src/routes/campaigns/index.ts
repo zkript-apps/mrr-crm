@@ -1,6 +1,6 @@
 import express, { Router } from "express";
 import {
-  addCampain,
+  addCampaign,
   deleteCampaign,
   getAllCampaigns,
   getCampaign,
@@ -11,20 +11,25 @@ import {
   updateCampaignLeadById,
   updateCampaignValidate,
   updatePaymentImage,
+  addUploadCampaign
 } from "./services/default";
+import isUserAdmin from "@/common/middlewares/isUserAdmin";
+import isUserLoggedIn from "@/common/middlewares/isUserLoggedIn";
 
 const router: Router = express.Router();
 
-router.get("/", getAllCampaigns);
-router.get("/:campaignId", getCampaign);
-router.post("/", addCampain);
-router.patch("/upload-image", updatePaymentImage);
-router.patch("/:campaignId", updateCampaign);
+router.post("/upload-test", addUploadCampaign)
+router.get("/", isUserLoggedIn, getAllCampaigns);
+router.get("/:campaignId", isUserLoggedIn, getCampaign);
+router.post("/", isUserLoggedIn, isUserAdmin, addUploadCampaign);
+router.patch("/upload-image", isUserLoggedIn, updatePaymentImage);
+router.patch("/:campaignId", isUserLoggedIn, isUserAdmin, updateCampaign);
 router.patch("/update/:campaignId", updateCampaignValidate);
-router.delete("/:campaignId", deleteCampaign);
+router.delete("/:campaignId", isUserLoggedIn, isUserAdmin, deleteCampaign);
 
-router.get("/:campaignId/title-description", getCampaignNameDesc);
-router.get("/:campaignId/patterns", getCampaignPattern);
-router.get("/:campaignId/lead/:uniqueId", getCampaignLeadById);
-router.patch("/:campaignId/lead/:uniqueId", updateCampaignLeadById);
+router.get("/:campaignId/title-description", isUserLoggedIn, getCampaignNameDesc);
+router.get("/:campaignId/patterns", isUserLoggedIn, getCampaignPattern);
+router.get("/:campaignId/lead/:uniqueId", isUserLoggedIn, getCampaignLeadById);
+router.patch("/:campaignId/lead/:uniqueId", isUserLoggedIn, updateCampaignLeadById);
+
 export default router;

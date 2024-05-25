@@ -12,11 +12,15 @@ const Patterns = new Schema({
 });
 
 const Remarks = new Schema({
+  agentFirstName: String,
+  agentLastName: String,
   comment: String,
   date: Date,
 });
 
 const Payments = new Schema({
+  agentFirstName: String,
+  agentLastName: String,
   method: String,
   date: Date,
   receiptAmount: Number,

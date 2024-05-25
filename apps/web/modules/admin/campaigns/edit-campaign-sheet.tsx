@@ -122,25 +122,13 @@ export default function EditCampaignSheet({
                   <SelectValue placeholder="Select" />
                 </SelectTrigger>
                 <SelectContent>
-                  {campaign.patterns.map((option) => (
+                  {campaign?.patterns?.map((option) => (
                     <SelectItem key={option.name} value={option.name}>
                       {option.name}
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="username" className="text-right">
-                Master Password
-              </Label>
-              <Input
-                {...register("masterPassword")}
-                id="description"
-                type="password"
-                required
-                className="col-span-3"
-              />
             </div>
           </div>
           <SheetFooter>

@@ -1,6 +1,6 @@
 version: '3.8'
 services:
-  es-api:
+  mrrcrm-api:
     image: jpmadrigal/mrrcrm-api-dev:latest
     container_name: mrrcrm-api-dev
     restart: unless-stopped
@@ -8,3 +8,5 @@ services:
       - ../../.env.production.local
     ports:
       - 9000:9000
+    volumes:
+      - ../../../uploads:/usr/src/app/apps/api/build/uploads

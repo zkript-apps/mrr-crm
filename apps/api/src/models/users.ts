@@ -10,6 +10,17 @@ const users = new Schema({
     default: false,
     type: Boolean,
   },
+  role: {
+    type: String,
+    required: true,
+    default: "Agent",
+    enum: ["Admin", "Agent"]
+  },
+  campaignId: {
+    type: mongoose.Types.ObjectId,
+    ref: "Campaigns",
+    required: true,
+  },
   createdAt: {
     type: Date,
     default: Date.now(),
