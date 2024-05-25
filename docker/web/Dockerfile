@@ -1,0 +1,36 @@
+FROM --platform=linux/amd64 node:20.11.1-slim
+
+ARG API_URL
+ARG WEB_URL
+
+ENV API_URL=$API_URL
+ENV WEB_URL=$WEB_URL
+
+WORKDIR /usr/src/app
+ 
+# Copy root folders files
+COPY package.json ./
+COPY pnpm-lock.yaml ./
+COPY pnpm-workspace.yaml ./
+COPY .npmrc ./
+COPY tsconfig.json ./
+COPY turbo.json ./
+ 
+# Copy sub folders files
+COPY apps/web ./apps/web
+COPY packages/contract ./packages/contract
+COPY packages/eslint-config ./packages/eslint-config
+COPY packages/typescript-config ./packages/typescript-config
+
+# Install global packages
+RUN npm install -g typescript
+RUN npm install -g pnpm@8.9.0
+
+# Run setup
+RUN pnpm install
+RUN npx next telemetry disable
+RUN pnpm run build
+ 
+EXPOSE 3000
+ 
+CMD [ "pnpm", "run", "start" ]

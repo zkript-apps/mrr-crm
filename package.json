@@ -5,7 +5,16 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "start": "turbo start",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "dbp:web": "docker image rm jpmadrigal/mrrcrm-web-dev:latest ; docker compose -f ./docker/web/compose-build.yml --env-file .env.production.local build --no-cache && docker push jpmadrigal/mrrcrm-web-dev:latest",
+    "dbp:api": "docker image rm jpmadrigal/mrrcrm-api-dev:latest ; docker build --no-cache -f ./docker/api/Dockerfile -t jpmadrigal/mrrcrm-api-dev . && docker push jpmadrigal/mrrcrm-api-dev:latest",
+    "dr:api": "sudo docker container stop mrrcrm-api-dev ; sudo docker container rm mrrcrm-api-dev ; sudo docker image rm jpmadrigal/mrrcrm-api-dev:latest ; sudo docker pull jpmadrigal/mrrcrm-api-dev:latest && sudo docker compose -f ./docker/api/compose.yml up -d && sudo docker ps",
+    "dr:web": "sudo docker container stop mrrcrm-web-dev ; sudo docker container rm mrrcrm-web-dev ; sudo docker image rm jpmadrigal/mrrcrm-web-dev:latest ; sudo docker pull jpmadrigal/mrrcrm-web-dev:latest && sudo docker compose -f ./docker/web/compose.yml up -d && sudo docker ps",
+    "db:web-arm": "docker image rm jpmadrigal/mrrcrm-web-dev-arm:latest ; docker compose -f ./docker/web/compose-build-arm.yml --env-file .env.development build --no-cache",
+    "dc:web-arm": "docker compose -f ./docker/web/compose-arm.yml up -d && docker ps",
+    "db:api-arm": "docker image rm jpmadrigal/mrrcrm-api-dev-arm:latest ; docker build --no-cache -f ./docker/api/Dockerfile.arm -t jpmadrigal/mrrcrm-api-dev-arm .",
+    "dc:api-arm": "docker compose -f ./docker/api/compose-arm.yml up -d && docker ps"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
