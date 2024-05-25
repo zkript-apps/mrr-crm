@@ -19,7 +19,6 @@ const users = new Schema({
   campaignId: {
     type: mongoose.Types.ObjectId,
     ref: "Campaigns",
-    required: true,
   },
   createdAt: {
     type: Date,
