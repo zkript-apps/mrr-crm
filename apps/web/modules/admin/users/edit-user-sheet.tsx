@@ -153,7 +153,7 @@ export default function EditUserSheet({
                 Campaign
               </Label>
               <Select
-                defaultValue={(user.campaignId as T_Campaign)._id}
+                defaultValue={(user.campaignId as T_Campaign)?._id}
                 onValueChange={(selectedValue) => {
                   setCampaignId(selectedValue);
                 }}

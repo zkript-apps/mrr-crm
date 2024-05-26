@@ -18,7 +18,7 @@ const Lead = () => {
     (state) => state,
   );
   const { data: titleAndDescription, isLoading: isTitleAndDescriptionLoading } =
-    useGetCampaignTitleAndDescription((auth.campaignId as T_Campaign)._id as string);
+    useGetCampaignTitleAndDescription((auth.campaignId as T_Campaign)?._id as string);
   return (
     <div className="space-y-6 p-10 pb-16">
       <div>

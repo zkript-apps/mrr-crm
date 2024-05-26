@@ -39,7 +39,7 @@ function AddNewPaymentModal({
     (state) => state,
   );
   const { mutate, isPending: isUpdateCampaignLeadLoading } =
-    useUpdateCampaignLeadById((auth.campaignId as T_Campaign)._id as string, leadId);
+    useUpdateCampaignLeadById((auth.campaignId as T_Campaign)?._id as string, leadId);
   const { mutate: uploadImage, isPending: isUploadingImage } =
     useUploadPaymentReceipt();
 

@@ -16,7 +16,7 @@ function PaymentHistory() {
     (state) => state,
   );
   const { data: campaignLead, isLoading: isCampaignLeadLoading } =
-    useGetCampaignLeadById((auth.campaignId as T_Campaign)._id as string, leadId);
+    useGetCampaignLeadById((auth.campaignId as T_Campaign)?._id as string, leadId);
   return (
     <div className="flex flex-col gap-6">
       {campaignLead.item && (

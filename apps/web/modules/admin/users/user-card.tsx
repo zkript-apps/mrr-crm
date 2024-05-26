@@ -20,7 +20,7 @@ export default function UserCard({
     <Card>
       <CardHeader>
         <CardTitle className="text-xl">{user.firstName} {user.lastName}</CardTitle>
-        <CardDescription>{user.role} ({(user.campaignId as T_Campaign).title})</CardDescription>
+        <CardDescription>{user.role} ({(user.campaignId as T_Campaign)?.title})</CardDescription>
       </CardHeader>
       <CardFooter className="flex justify-between">
         <EditUserSheet user={user} />

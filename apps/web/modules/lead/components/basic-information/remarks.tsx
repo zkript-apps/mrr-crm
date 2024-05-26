@@ -32,7 +32,7 @@ function Remarks({
     (state) => state
   );
   const { mutate, isPending: isUpdateCampaignLeadLoading } =
-    useUpdateCampaignLeadById((auth.campaignId as T_Campaign)._id as string, leadId);
+    useUpdateCampaignLeadById((auth.campaignId as T_Campaign)?._id as string, leadId);
   const onSubmit = (data: any) => {
     const formattedData = {
       ...campaignLead,
