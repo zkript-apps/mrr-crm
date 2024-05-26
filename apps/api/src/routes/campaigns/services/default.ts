@@ -394,7 +394,6 @@ export const updatePaymentImage = async (req: Request, res: Response) => {
     //@ts-ignore
     const newFileName = `${uuidv4()}-${files.name}`;
     const absolutePathImage = path.resolve(__dirname, dirRelative, newFileName);
-    console.log('directory: ', absolutePath)
     //@ts-ignore
     await files?.mv(absolutePathImage);
     //@ts-ignore

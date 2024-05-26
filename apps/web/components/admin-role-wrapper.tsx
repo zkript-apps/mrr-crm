@@ -11,7 +11,6 @@ type Props = {
 const AdminRoleWrapper = ({ children }: Props) => {
   const router = useRouter();
   const role = useAuthStore((state) => state.role);
-  console.log
   if(role && role !== "Admin") {
     toast.error("Unauthorized", { id: "Unauthorized" })
     router.push("/dashboard")
