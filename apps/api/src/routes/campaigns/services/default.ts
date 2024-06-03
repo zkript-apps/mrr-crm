@@ -19,9 +19,9 @@ import * as XLSX from "xlsx";
 const response = new ResponseService();
 export const getAllCampaigns = async (req: Request, res: Response) => {
   try {
-    const getAllCampaigns = await campaigns.find({ deletedAt: null });
+    const getAllCampaigns = await campaigns.find({ deletedAt: null }, { leads: 0 });
     const countAllCampaigns = await campaigns
-      .find({ deletedAt: null })
+      .find({ deletedAt: null }, { leads: 0 })
       .countDocuments();
     if (!getAllCampaigns) {
       return res.json(response.success({ message: "No campaign found" }));
@@ -219,58 +219,49 @@ export const updateCampaign = async (req: Request, res: Response) => {
 };
 
 export const updateCampaignValidate = async (req: Request, res: Response) => {
-  const {
-    title,
-    description,
-    leadUniqueKey,
-    masterPassword,
-  }: T_Update_Campaign = req.body;
+
   const campaignId = req.params.campaignId;
   const isValidInput = Z_Update_Campaign.safeParse(req.body);
-  if (masterPassword === MASTER_PASSWORD) {
-    if (isValidInput.success) {
-      try {
-        const getCampaign = campaigns.findOne({
-          _id: campaignId,
-          deletedAt: null,
-        });
-        if (!getCampaign) {
-          return res.json(
-            response.error({
-              message: "This campaign not exists on our system",
-            }),
-          );
-        }
-        const editCampaign = await campaigns.findByIdAndUpdate(
-          campaignId,
-          {
-            $set: req.body,
-            updatedAt: Date.now(),
-          },
-          {
-            new: true,
-          },
-        );
-        res.json(
-          response.success({
-            item: editCampaign,
-            message: "Campaign successfully updated",
-          }),
-        );
-      } catch (err: any) {
+  if (isValidInput.success) {
+    try {
+      const getCampaign = campaigns.findOne({
+        _id: campaignId,
+        deletedAt: null,
+      });
+      if (!getCampaign) {
         return res.json(
           response.error({
-            message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+            message: "This campaign not exists on our system",
           }),
         );
       }
-    } else {
+      const editCampaign = await campaigns.findByIdAndUpdate(
+        campaignId,
+        {
+          $set: req.body,
+          updatedAt: Date.now(),
+        },
+        {
+          new: true,
+        },
+      );
+      res.json(
+        response.success({
+          item: editCampaign,
+          message: "Campaign successfully updated",
+        }),
+      );
+    } catch (err: any) {
       return res.json(
-        response.error({ message: JSON.parse(isValidInput.error.message) }),
+        response.error({
+          message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+        }),
       );
     }
   } else {
-    return res.json(response.error({ message: "Unauthorized" }));
+    return res.json(
+      response.error({ message: JSON.parse(isValidInput.error.message) }),
+    );
   }
 };
 

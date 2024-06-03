@@ -17,7 +17,12 @@ app.use(
   }),
 );
 app.use("/files", express.static(path.join(__dirname, "uploads")));
-app.use(fileUpload());
+
+app.use(fileUpload({
+  limits: {
+    fileSize: 250 * 1024 * 1024, // 250mb
+  }
+}));
 
 routes(app);
 
