@@ -42,12 +42,11 @@ export default function EditCampaignSheet({
   );
 
   const onSubmit: SubmitHandler<any> = (data: any) => {
-    const { title, description, masterPassword } = data;
+    const { title, description } = data;
     const campaignData = {
       title,
       description,
-      leadUniqueKey: leadUniqueKey,
-      masterPassword,
+      leadUniqueKey: leadUniqueKey
     };
     const callBackReq = {
       onSuccess: (data: any) => {

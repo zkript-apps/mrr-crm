@@ -75,50 +75,46 @@ export const getPaymentMethodByCampaign = async (
 };
 
 export const addPaymentMethod = async (req: Request, res: Response) => {
-  const { campaignId, title, steps, masterPassword }: T_Add_PaymentMethod =
-    req.body;
-  if (masterPassword === MASTER_PASSWORD) {
-    const isValidInput = Z_Add_PaymentMethod.safeParse(req.body);
-    if (isValidInput.success) {
-      try {
-        const getCampaign = await campaigns.findOne({
-          _id: campaignId,
-          deletedAt: null,
-        });
-        if (!getCampaign) {
-          return res.json(
-            response.error({
-              message: "This campaign is not exist on campaigns record",
-            }),
-          );
-        }
-        const newPaymentMethodSteps = new paymentMethods({
-          campaign: campaignId,
-          title: title,
-          steps: steps,
-          createdAt: Date.now(),
-        });
-        const createdPaymentMethodSteps = await newPaymentMethodSteps.save();
-        res.json(
-          response.success({
-            item: createdPaymentMethodSteps,
-            message: "Payment methods steps successfully created",
-          }),
-        );
-      } catch (err: any) {
+  const { campaignId, title, steps }: T_Add_PaymentMethod = req.body;
+
+  const isValidInput = Z_Add_PaymentMethod.safeParse(req.body);
+  if (isValidInput.success) {
+    try {
+      const getCampaign = await campaigns.findOne({
+        _id: campaignId,
+        deletedAt: null,
+      });
+      if (!getCampaign) {
         return res.json(
           response.error({
-            message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+            message: "This campaign is not exist on campaigns record",
           }),
         );
       }
-    } else {
+      const newPaymentMethodSteps = new paymentMethods({
+        campaign: campaignId,
+        title: title,
+        steps: steps,
+        createdAt: Date.now(),
+      });
+      const createdPaymentMethodSteps = await newPaymentMethodSteps.save();
+      res.json(
+        response.success({
+          item: createdPaymentMethodSteps,
+          message: "Payment methods steps successfully created",
+        }),
+      );
+    } catch (err: any) {
       return res.json(
-        response.error({ message: JSON.parse(isValidInput.error.message) }),
+        response.error({
+          message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+        }),
       );
     }
   } else {
-    return res.json(response.error({ message: "Unauthorized" }));
+    return res.json(
+      response.error({ message: JSON.parse(isValidInput.error.message) }),
+    );
   }
 };
 

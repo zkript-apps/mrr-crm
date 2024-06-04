@@ -66,90 +66,24 @@ export const addCampaign = async (req: Request, res: Response) => {
     leadUniqueKey,
     patterns,
     leads,
-    masterPassword,
   } = req.body;
-  if (masterPassword === MASTER_PASSWORD) {
-    const isValidInput = Z_Add_Campaign.safeParse(req.body);
-    if (isValidInput.success) {
-      try {
-        const newCampaign = new campaigns({
-          title: title,
-          description: description,
-          leadUniqueKey: leadUniqueKey,
-          patterns: patterns,
-          leads: leads,
-          createdAt: Date.now(),
-          updatedAt: null,
-          deletedAt: null,
-        });
-        const createCampaign = await newCampaign.save();
-        res.json(
-          response.success({
-            item: createCampaign,
-            message: "Campaign successfully added",
-          }),
-        );
-      } catch (err: any) {
-        return res.json(
-          response.error({
-            message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
-          }),
-        );
-      }
-    } else {
-      return res.json(
-        response.error({ message: JSON.parse(isValidInput.error.message) }),
-      );
-    }
-  } else {
-    return res.json(response.error({ message: "Unauthorized" }));
-  }
-};
-
-export const addUploadCampaign = async (req: Request, res: Response) => {
-  const file = req?.files?.file;
-  const allowedMimeTypes = [
-    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-    "text/csv"
-  ]
-  // @ts-expect-error
-  if (allowedMimeTypes.includes(file.mimetype)) {
-    const isValidInput = Z_Add_Campaign.safeParse(req.body);
-    if (isValidInput.success) {
-    const {
-      title,
-      description,
-      leadUniqueKey,
-    }: T_Add_Campaign = req.body;
+  const isValidInput = Z_Add_Campaign.safeParse(req.body);
+  if (isValidInput.success) {
     try {
-      // @ts-expect-error
-      const workbook = XLSX.read(file.data, { type: "buffer" });
-      const sheetName = workbook.SheetNames[0];
-      const sheet = workbook.Sheets[sheetName as string];
-      const sheetData = XLSX.utils.sheet_to_json(sheet as any);
-      const getPatterns =
-        sheetData.length > 0 ? Object.keys(sheetData[0] as any) : [];
       const newCampaign = new campaigns({
         title: title,
         description: description,
         leadUniqueKey: leadUniqueKey,
-        patterns: getPatterns?.map((pattern) => ({
-          name: pattern,
-          text:
-            pattern.charAt(0).toUpperCase() + pattern.slice(1).replace(/_/g, " "),
-        })),
-        leads: sheetData?.map((lead) => ({
-          values: lead,
-          remarks: [],
-          payments: [],
-        })),
+        patterns: patterns,
+        leads: leads,
         createdAt: Date.now(),
         updatedAt: null,
         deletedAt: null,
       });
-      await newCampaign.save();
+      const createCampaign = await newCampaign.save();
       res.json(
         response.success({
+          item: createCampaign,
           message: "Campaign successfully added",
         }),
       );
@@ -165,6 +99,67 @@ export const addUploadCampaign = async (req: Request, res: Response) => {
       response.error({ message: JSON.parse(isValidInput.error.message) }),
     );
   }
+};
+
+export const addUploadCampaign = async (req: Request, res: Response) => {
+  const file = req?.files?.file;
+  const allowedMimeTypes = [
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    "text/csv"
+  ]
+  // @ts-expect-error
+  if (allowedMimeTypes.includes(file.mimetype)) {
+    const isValidInput = Z_Add_Campaign.safeParse(req.body);
+    if (isValidInput.success) {
+      const {
+        title,
+        description,
+        leadUniqueKey,
+      }: T_Add_Campaign = req.body;
+      try {
+        // @ts-expect-error
+        const workbook = XLSX.read(file.data, { type: "buffer" });
+        const sheetName = workbook.SheetNames[0];
+        const sheet = workbook.Sheets[sheetName as string];
+        const sheetData = XLSX.utils.sheet_to_json(sheet as any);
+        const getPatterns =
+          sheetData.length > 0 ? Object.keys(sheetData[0] as any) : [];
+        const newCampaign = new campaigns({
+          title: title,
+          description: description,
+          leadUniqueKey: leadUniqueKey,
+          patterns: getPatterns?.map((pattern) => ({
+            name: pattern,
+            text:
+              pattern.charAt(0).toUpperCase() + pattern.slice(1).replace(/_/g, " "),
+          })),
+          leads: sheetData?.map((lead) => ({
+            values: lead,
+            remarks: [],
+            payments: [],
+          })),
+          createdAt: Date.now(),
+          updatedAt: null,
+          deletedAt: null,
+        });
+        await newCampaign.save();
+        res.json(
+          response.success({
+            message: "Campaign successfully added",
+          }),
+        );
+      } catch (err: any) {
+        return res.json(
+          response.error({
+            message: err.message ? err.message : UNKNOWN_ERROR_OCCURRED,
+          }),
+        );
+      }
+    } else {
+      return res.json(
+        response.error({ message: JSON.parse(isValidInput.error.message) }),
+      );
+    }
   } else {
     res.json(
       response.error({
