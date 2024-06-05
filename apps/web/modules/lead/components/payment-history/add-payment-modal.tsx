@@ -19,6 +19,7 @@ import { Upload } from "lucide-react";
 import useUploadPaymentReceipt from "./hooks/useUploadPaymentReceipt";
 import useAuthStore from "@/common/store/useAuthStore";
 import { T_Campaign } from "@repo/contract";
+import { useParams } from "next/navigation";
 
 function AddNewPaymentModal({
   children,
@@ -29,6 +30,8 @@ function AddNewPaymentModal({
   campaignLead: T_Campaign_Lead;
   leadId: string;
 }) {
+  const params = useParams();
+  const campaignId = params.campaignId as string;
   const formRef = useRef<HTMLFormElement>(null);
   const [open, setOpen] = useState(false);
   const queryClient = useQueryClient();
@@ -38,7 +41,7 @@ function AddNewPaymentModal({
     (state) => state,
   );
   const { mutate, isPending: isUpdateCampaignLeadLoading } =
-    useUpdateCampaignLeadById((auth.campaignId as T_Campaign)?._id as string, leadId);
+    useUpdateCampaignLeadById(campaignId ? campaignId : (auth.campaignId as T_Campaign)?._id as string, leadId);
   const { mutate: uploadImage, isPending: isUploadingImage } =
     useUploadPaymentReceipt();
 

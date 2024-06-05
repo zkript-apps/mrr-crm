@@ -8,12 +8,13 @@ import { T_Campaign } from "@repo/contract";
 
 function BasicInformation() {
   const params = useParams();
+  const campaignId = params.campaignId as string;
   const leadId = params.leadId as string;
   const auth = useAuthStore(
     (state) => state,
   );
   const { data: campaignLead, isLoading: isCampaignLeadLoading } =
-    useGetCampaignLeadById((auth.campaignId as T_Campaign)?._id as string, leadId);
+    useGetCampaignLeadById(campaignId ? campaignId : (auth.campaignId as T_Campaign)?._id as string, leadId);
   return (
     <div className="flex gap-44">
       <div className="w-1/2">

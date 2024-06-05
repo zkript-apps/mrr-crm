@@ -7,18 +7,25 @@ import { Skeleton } from "@/components/skeleton";
 import PaymentHistory from "./components/payment-history";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { LucideArrowLeft } from "lucide-react";
 import useAuthStore from "@/common/store/useAuthStore";
 import { T_Campaign } from "@repo/contract";
+import { toast } from "sonner";
 
 const Lead = () => {
   const router = useRouter();
+  const params = useParams();
+  const campaignId = params.campaignId as string;
   const auth = useAuthStore(
     (state) => state,
   );
+  if(campaignId && auth.role !== "Admin") {
+    toast.error("Unauthorized", { id: "Unauthorized" })
+    router.push("/dashboard")
+  }
   const { data: titleAndDescription, isLoading: isTitleAndDescriptionLoading } =
-    useGetCampaignTitleAndDescription((auth.campaignId as T_Campaign)?._id as string);
+    useGetCampaignTitleAndDescription(campaignId ? campaignId : (auth.campaignId as T_Campaign)?._id as string);
   return (
     <div className="space-y-6 p-10 pb-16">
       <div>

@@ -12,6 +12,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import useAuthStore from "@/common/store/useAuthStore";
 import { T_Campaign } from "@repo/contract";
+import { useParams } from "next/navigation";
 
 interface T_Remark {
   comment: string;
@@ -26,13 +27,15 @@ function Remarks({
   isLoading: boolean;
   leadId: string;
 }) {
+  const params = useParams();
+  const campaignId = params.campaignId as string;
   const queryClient = useQueryClient();
   const { register, handleSubmit, reset } = useForm<T_Remark>();
   const auth = useAuthStore(
     (state) => state
   );
   const { mutate, isPending: isUpdateCampaignLeadLoading } =
-    useUpdateCampaignLeadById((auth.campaignId as T_Campaign)?._id as string, leadId);
+    useUpdateCampaignLeadById(campaignId ? campaignId : (auth.campaignId as T_Campaign)?._id as string, leadId);
   const onSubmit = (data: any) => {
     const formattedData = {
       ...campaignLead,

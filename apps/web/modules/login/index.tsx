@@ -37,6 +37,10 @@ export function LoginForm() {
     };
     mutate({ username, password }, callBackReq);
   };
+  const token = Cookies.get("token");
+  if(token) {
+    router.push("/dashboard")
+  }
   return (
     <div className="flex items-center justify-center h-screen">
       <Card className="max-w-sm">

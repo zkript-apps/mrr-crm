@@ -6,17 +6,30 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import useGetCampaigns from "@/modules/admin/campaigns/hooks/useGetCampaigns";
+import { T_Campaign } from "@repo/contract";
 
 const DashboardPage = () => {
   const role = useAuthStore((state) => state.role);
+  const { data } = useGetCampaigns();
   const router = useRouter();
   const [search, setSearch] = useState("");
+  const [campaignId, setCampaignId] = useState("");
   const onSubmit = (e: any) => {
     e.preventDefault();
-    if (search) {
+    if (role !== "Admin" && search) {
       router.push(`/lead/${search}`);
+    } else if (role === "Admin" && search && campaignId) {
+      router.push(`/lead/${search}/${campaignId}`);
     } else {
-      toast.error("Please add search phrase");
+      toast.error("Please complete all parameters");
     }
   };
   return (
@@ -37,8 +50,27 @@ const DashboardPage = () => {
           Logout
         </Link>
       </div>
+      {role === "Admin" && (
+        <div className="flex w-full max-w-56 items-center space-x-2 mt-8">
+          <Select
+            required
+            onValueChange={(selectedValue) => setCampaignId(selectedValue)}
+          >
+            <SelectTrigger className="col-span-3">
+              <SelectValue placeholder="Select campaign" />
+            </SelectTrigger>
+            <SelectContent>
+              {data?.items.map((option: T_Campaign) => (
+                <SelectItem key={option.title} value={option._id as string}>
+                  {option.title}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      )}
       <form
-        className="flex w-full max-w-sm items-center space-x-2 mt-8"
+        className="flex w-full max-w-sm items-center space-x-2 mt-4"
         onSubmit={onSubmit}
       >
         <Input

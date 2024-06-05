@@ -8,21 +8,27 @@ import { Button } from "@/components/ui/button";
 import AddNewPaymentModal from "./add-payment-modal";
 import useAuthStore from "@/common/store/useAuthStore";
 import { T_Campaign, T_Payments } from "@repo/contract";
+import formatCurrency from "@/common/helpers/formatCurrency";
 
 function PaymentHistory() {
   const params = useParams();
   const leadId = params.leadId as string;
+  const campaignId = params.campaignId as string;
   const auth = useAuthStore(
     (state) => state,
   );
   const { data: campaignLead, isLoading: isCampaignLeadLoading } =
-    useGetCampaignLeadById((auth.campaignId as T_Campaign)?._id as string, leadId);
+    useGetCampaignLeadById(campaignId ? campaignId : (auth.campaignId as T_Campaign)?._id as string, leadId);
+  const totalRepayment = campaignLead?.item ? campaignLead.item.payments.reduce((a: number, b: T_Payment) => { return a + b.repayAmount }, 0) : 0;
   return (
     <div className="flex flex-col gap-6">
       {campaignLead.item && (
-        <AddNewPaymentModal campaignLead={campaignLead?.item} leadId={leadId}>
-          <Button className="w-44">Add New Payment</Button>
-        </AddNewPaymentModal>
+        <div className="flex items-center justify-between">
+          <h3 className="text-xl">Total Repayment: <span className="font-bold">{formatCurrency(totalRepayment, "Philippines")}</span></h3>
+          <AddNewPaymentModal campaignLead={campaignLead?.item} leadId={leadId}>
+            <Button className="w-44">Add New Payment</Button>
+          </AddNewPaymentModal>
+        </div>
       )}
 
       {campaignLead?.item ? (

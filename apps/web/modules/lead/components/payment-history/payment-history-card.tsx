@@ -65,7 +65,7 @@ export default function PaymentHistoryCard({
               <div className="flex">
                 <div className="mt-4 flex flex-col w-1/2">
                   <div className="text-sm text-gray-500">Remarks</div>
-                  <div className="text-lg">{payment.remarks}</div>
+                  <div className="text-lg">{payment.remarks ? payment.remarks : "---"}</div>
                 </div>
                 <div className="mt-4 flex flex-col w-1/2">
                   <div className="text-sm text-gray-500">Image</div>
